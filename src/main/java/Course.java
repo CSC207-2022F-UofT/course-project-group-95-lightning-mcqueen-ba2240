@@ -1,7 +1,6 @@
 /**
  * This dataclass stores the information for a given course.
  *
- *
  */
 public class Course {
     private final int id;
