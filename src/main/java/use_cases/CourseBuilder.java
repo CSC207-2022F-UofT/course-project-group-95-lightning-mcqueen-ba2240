@@ -90,16 +90,23 @@ public class CourseBuilder {
      * @return DayOfWeek object with the corresponding day of the week or null if invalid
      */
     private DayOfWeek parseDayOfWeek(String day) {
-        return switch (day) {
-            case "MO" -> DayOfWeek.MONDAY;
-            case "TU" -> DayOfWeek.TUESDAY;
-            case "WE" -> DayOfWeek.WEDNESDAY;
-            case "TH" -> DayOfWeek.THURSDAY;
-            case "FR" -> DayOfWeek.FRIDAY;
-            case "SA" -> DayOfWeek.SATURDAY;
-            case "SU" -> DayOfWeek.SUNDAY;
-            default -> null;
-        };
+        switch (day) {
+            case "MO":
+                return DayOfWeek.MONDAY;
+            case "TU":
+                return DayOfWeek.TUESDAY;
+            case "WE":
+                return DayOfWeek.WEDNESDAY;
+            case "TH":
+                return DayOfWeek.THURSDAY;
+            case "FR":
+                return DayOfWeek.FRIDAY;
+            case "SA":
+                return DayOfWeek.SATURDAY;
+            case "SU":
+                return DayOfWeek.SUNDAY;
+        }
+        return null;
     }
 
     /**

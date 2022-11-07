@@ -4,9 +4,13 @@ import java.time.DayOfWeek;
 import java.time.LocalTime;
 
 /**
- * This record dataclass stores the information for a given session.
+ * This dataclass stores the information for a given session.
  */
-public record Session(DayOfWeek meetingDay, LocalTime meetingStartTime, LocalTime meetingEndTime, String meetingRoom) {
+public class Session {
+    private final DayOfWeek meetingDay;
+    private final LocalTime meetingStartTime;
+    private final LocalTime meetingEndTime;
+    private final String meetingRoom;
     /**
      * Construct a Session, setting the session day, start time, end time and room.
      *
@@ -18,48 +22,39 @@ public record Session(DayOfWeek meetingDay, LocalTime meetingStartTime, LocalTim
     public Session(DayOfWeek meetingDay, LocalTime meetingStartTime, LocalTime meetingEndTime, String meetingRoom) {
         this.meetingDay = meetingDay;
         this.meetingStartTime = meetingStartTime;
-        this.meetingEndTime = meetingStartTime;
+        this.meetingEndTime = meetingEndTime;
         this.meetingRoom = meetingRoom;
     }
 
-
     /**
      * A getter for the session day.
-     *
      * @return the session day as a String
      */
-    @Override
-    public DayOfWeek meetingDay() {
+    public DayOfWeek getMeetingDay() {
         return meetingDay;
     }
 
     /**
      * A getter for the session start time
-     *
      * @return the session start time as a LocalTime object
      */
-    @Override
-    public LocalTime meetingStartTime() {
+    public LocalTime getMeetingStartTime() {
         return meetingStartTime;
     }
 
     /**
      * A getter for the session end time
-     *
      * @return the session start time as a LocalTime object
      */
-    @Override
-    public LocalTime meetingEndTime() {
+    public LocalTime getMeetingEndTime() {
         return meetingEndTime;
     }
 
     /**
      * A getter for the session meeting room.
-     *
      * @return the course id as a String
      */
-    @Override
-    public String meetingRoom() {
+    public String getMeetingRoom() {
         return meetingRoom;
     }
 
