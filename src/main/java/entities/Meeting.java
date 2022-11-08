@@ -1,73 +1,84 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This dataclass stores the information for a given meeting.
  *
  */
 public class Meeting {
-    private final String type;
-    private final double duration;
-    private final Session[] sessions;
+    private final String section;
+    private final Type type;
+    private final List<Session> sessions;
     private final String instructor;
-    private Object rateMyProf;
-    private final int waitlistSize;
+    private final int capacity;
+    private final int enrollment;
+    private final int waitlist;
+    private Float rateMyProf;
 
     /**
-     * Construct a Meeting, setting the meeting type, duration, sessions, instructor, rateMyProf score and waitlistSize.
+     * Construct a Meeting, setting the section, meeting type, duration, sessions, instructor, rateMyProf score.
+     * @param section the section of the meeting (LEC"0101", TUT"5101")
      * @param type the type of the meeting (Lecture, Tutorial, Practical)
-     * @param duration the length of the entities.Meeting in hours
-     * @param sessions a Session[] containing the different sessions for the entities.Meeting
      * @param instructor the professor/student who is instructing the entities.Meeting
-     * @param rateMyProf the rate my professor score associated with the instructor (null if score doesn't exist)
-     * @param waitlistSize the number of people on the waitlist as an integer
+     * @param capacity the number of students that can enroll in the course
+     * @param enrollment the number of students that have enrolled in the course
+     * @param waitlist the number of students waitlisted for the course
+     * @param sessions a variable argument for sessions in the Meeting
      */
-    public Meeting(String type, double duration, Session[] sessions, String instructor, double rateMyProf, int waitlistSize) {
+    public Meeting(String section, Type type, String instructor, int capacity, int enrollment, int waitlist,
+                   Session... sessions) {
+        this.section = section;
         this.type = type;
-        this.duration = duration;
-        this.sessions = sessions;
         this.instructor = instructor;
-        this.rateMyProf = rateMyProf;
-        this.waitlistSize = waitlistSize;
-    }
 
-    public Meeting(String type, double duration, Session[] sessions, String instructor, int waitlistSize) {
-        this.type = type;
-        this.duration = duration;
-        this.sessions = sessions;
-        this.instructor = instructor;
+        this.capacity = capacity;
+        this.enrollment = enrollment;
+        this.waitlist = waitlist;
+
+        this.sessions = new ArrayList<>(Arrays.asList(sessions));
         this.rateMyProf = null;
-        this.waitlistSize = waitlistSize;
     }
 
     /**
      * A setter for the entities.Meeting's rateMyProf score.
      * @param score the score to be set as the rateMyProf score
      */
-    public void setRateMyProf(double score) {
+    public void setRateMyProf(Float score) {
         this.rateMyProf = score;
+    }
+
+    /**
+     * A getter for the entities.Meeting's section
+     * @return the entity.Meeting's section as a String
+     */
+    public String getSection() {
+        return section;
     }
 
     /**
      * A getter for the entities.Meeting's type.
      * @return the entities.Meeting's type as a String
      */
-    public String getType() {
+    public Type getType() {
         return this.type;
     }
 
     /**
-     * A getter for the entities.Meeting's duration.
-     * @return the entities.Meeting's duration as a double
+     * A getter for the entities.Meeting's code e.g. LEC0101
+     * @return the entities.Meeting's code as a String
      */
-    public double getDuration() {
-        return this.duration;
+    public String getCode() {
+        return this.type.toString() + this.section;
     }
 
     /**
      * A getter for the entities.Meeting's sessions.
      * @return the entities.Meeting's sessions as a Session[]
      */
-    public Session[] getSessions() {
+    public List<Session> getSessions() {
         return this.sessions;
     }
 
@@ -83,15 +94,62 @@ public class Meeting {
      * A getter for the entities.Meeting's rateMyProf score.
      * @return the entities.Meeting's rateMyProf score as an Object (can either be null or of type double)
      */
-    public Object getRateMyProf() {
+    public Float getRateMyProf() {
         return this.rateMyProf;
     }
 
     /**
-     * A getter for the entities.Meeting's waitlistSize
-     * @return the entities.Meeting's waitlistSize as an int
+     * A getter for the entities.Meeting's capacity.
+     * @return the entities.Meeting's capacity as an integer
      */
-    public int getWaitlistSize() {
-        return this.waitlistSize;
+    public int getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * A getter for the entities.Meeting's enrollment.
+     * @return the entities.Meeting's enrollment as an integer
+     */
+    public int getEnrollment() {
+        return enrollment;
+    }
+
+    /**
+     * A getter for the entities.Meeting's waitlist.
+     * @return the entities.Meeting's waitlist as an integer
+     */
+    public int getWaitlist() {
+        return waitlist;
+    }
+
+    /**
+     * Add a new Session to the Meeting
+     * @param session the meeting to be added to the course
+     */
+    public void addSessions(Session session) {
+        this.sessions.add(session);
+    }
+
+    @Override
+    public String toString() {
+        return "Meeting{" +
+                "section='" + section + '\'' +
+                ", type=" + type +
+                ", sessions=" + sessions +
+                ", instructor='" + instructor + '\'' +
+                ", capacity=" + capacity +
+                ", enrollment=" + enrollment +
+                ", waitlist=" + waitlist +
+                ", rateMyProf=" + rateMyProf +
+                '}';
+    }
+
+    /**
+     * Enum for Meeting Type
+     */
+    public enum Type {
+        LEC,
+        TUT,
+        PRA
     }
 }
