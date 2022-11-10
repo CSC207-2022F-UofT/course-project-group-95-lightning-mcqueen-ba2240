@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This dataclass stores the information for a given course.
@@ -66,6 +67,23 @@ public class Course {
      */
     public void addMeeting(Meeting meeting) {
         this.meetings.add(meeting);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Course)){
+            return false;
+        }
+        Course course = (Course) o;
+        return id == course.id && name.equals(course.name) && code.equals(course.code) && meetings.equals(course.meetings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, code, meetings);
     }
 
     @Override
