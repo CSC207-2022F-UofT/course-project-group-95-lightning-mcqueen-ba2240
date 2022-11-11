@@ -2,6 +2,7 @@ package entities;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * This dataclass stores the information for a given session.
@@ -11,45 +12,19 @@ public class Session {
     private final LocalTime meetingStartTime;
     private final LocalTime meetingEndTime;
     private final String meetingRoom;
-
     /**
      * Construct a Session, setting the session day, start time, end time and room.
-     * @param meetingDay the day the session is taking place ('MO', 'TU', ...)
+     *
+     * @param meetingDay       the day the session is taking place MONDAY, TUESDAY, ...
      * @param meetingStartTime the start time of the meeting in 24H format ('12:00', '17:30')
-     * @param meetingEndTime the end time of the meeting in 24H format ('12:00', '17:30')
-     * @param meetingRoom the UofT room code of the session (BA2240)
+     * @param meetingEndTime   the end time of the meeting in 24H format ('12:00', '17:30')
+     * @param meetingRoom      the UofT room code of the session (BA2240)
      */
-    public Session(String meetingDay, String meetingStartTime, String meetingEndTime, String meetingRoom) throws Exception{
-        this.meetingDay = parseDayOfWeek(meetingDay);
-        this.meetingStartTime = LocalTime.parse(meetingStartTime);
-        this.meetingEndTime = LocalTime.parse(meetingEndTime);
+    public Session(DayOfWeek meetingDay, LocalTime meetingStartTime, LocalTime meetingEndTime, String meetingRoom) {
+        this.meetingDay = meetingDay;
+        this.meetingStartTime = meetingStartTime;
+        this.meetingEndTime = meetingEndTime;
         this.meetingRoom = meetingRoom;
-    }
-
-    /**
-     * Parse the given meeting string day String
-     * @param day the day the session is taking place ('MO', 'TU', ...)
-     * @return DayOfWeek object with the corresponding day of the week
-     * @throws Exception if the day param is not valid
-     */
-    private DayOfWeek parseDayOfWeek(String day) throws Exception {
-        switch (day){
-            case "MO":
-                return DayOfWeek.MONDAY;
-            case "TU":
-                return DayOfWeek.TUESDAY;
-            case "WE":
-                return DayOfWeek.WEDNESDAY;
-            case "TH":
-                return DayOfWeek.THURSDAY;
-            case "FR":
-                return DayOfWeek.FRIDAY;
-            case "SA":
-                return DayOfWeek.SATURDAY;
-            case "SU":
-                return DayOfWeek.SUNDAY;
-        }
-        throw new Exception("Invalid day string");
     }
 
     /**
@@ -82,5 +57,32 @@ public class Session {
      */
     public String getMeetingRoom() {
         return meetingRoom;
+    }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "meetingDay=" + meetingDay +
+                ", meetingStartTime=" + meetingStartTime +
+                ", meetingEndTime=" + meetingEndTime +
+                ", meetingRoom='" + meetingRoom + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Session)){
+            return false;
+        }
+        Session session = (Session) o;
+        return meetingDay == session.meetingDay && meetingStartTime.equals(session.meetingStartTime) && meetingEndTime.equals(session.meetingEndTime) && meetingRoom.equals(session.meetingRoom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(meetingDay, meetingStartTime, meetingEndTime, meetingRoom);
     }
 }

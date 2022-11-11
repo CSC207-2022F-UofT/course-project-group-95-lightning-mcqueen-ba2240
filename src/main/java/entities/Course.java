@@ -1,5 +1,10 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * This dataclass stores the information for a given course.
  *
@@ -8,20 +13,19 @@ public class Course {
     private final int id;
     private final String name;
     private final String code;
-    private final Meeting[] meetings;
+    private final List<Meeting> meetings;
 
     /**
      * Construct a Course, setting the course id, name, instructor and meetings.
-     * @param id the course id used by the UofT Arts & Science Department
-     * @param name the name of the course used by the UofT Arts & Science Department
-     * @param meetings an array of meetings (Lectures/Tutorials) belonging to the course
+     * @param id the unique course id used by the UofT Arts & Science Department e.g. 61820
+     * @param name the name of the course used by the UofT Arts & Science Department e.g. "Software Design"
+     * @param code the standard course code used by UofT Arts & Science Department e.g. CSC207H1
      */
-
-    public Course(int id, String name, String code, Meeting[] meetings){
+    public Course(int id, String name, String code, Meeting... meetings){
         this.id = id;
         this.name = name;
         this.code = code;
-        this.meetings = meetings;
+        this.meetings = new ArrayList<>(Arrays.asList(meetings));
     }
 
     /**
@@ -42,9 +46,10 @@ public class Course {
 
     /**
      * A getter for the course name.
+     *
      * @return the course meetings as a Meeting array
      */
-    public Meeting[] getMeetings() {
+    public List<Meeting> getMeetings() {
         return this.meetings;
     }
 
@@ -54,5 +59,40 @@ public class Course {
      */
     public String getCode() {
         return code;
+    }
+
+    /**
+     * Add a new meeting to the course
+     * @param meeting the meeting to be added to the course
+     */
+    public void addMeeting(Meeting meeting) {
+        this.meetings.add(meeting);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Course)){
+            return false;
+        }
+        Course course = (Course) o;
+        return id == course.id && name.equals(course.name) && code.equals(course.code) && meetings.equals(course.meetings);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, code, meetings);
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", meetings=" + meetings +
+                '}';
     }
 }
