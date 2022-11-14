@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import entities.Timetable;
-import entities.Tags;
 
 public class Filterer {
     public ArrayList<Timetable> filterAll(ArrayList<Timetable> timetable_list, HashSet<String> desired_tags) {
