@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This dataclass stores the information for a given meeting.
@@ -142,6 +143,23 @@ public class Meeting {
                 ", waitlist=" + waitlist +
                 ", rateMyProf=" + rateMyProf +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Meeting)){
+            return false;
+        }
+        Meeting meeting = (Meeting) o;
+        return capacity == meeting.capacity && enrollment == meeting.enrollment && waitlist == meeting.waitlist && section.equals(meeting.section) && type == meeting.type && sessions.equals(meeting.sessions) && instructor.equals(meeting.instructor) && Objects.equals(rateMyProf, meeting.rateMyProf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(section, type, sessions, instructor, capacity, enrollment, waitlist, rateMyProf);
     }
 
     /**

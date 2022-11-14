@@ -2,6 +2,7 @@ package entities;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.Objects;
 
 /**
  * This dataclass stores the information for a given session.
@@ -66,5 +67,22 @@ public class Session {
                 ", meetingEndTime=" + meetingEndTime +
                 ", meetingRoom='" + meetingRoom + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o){
+            return true;
+        }
+        if (!(o instanceof Session)){
+            return false;
+        }
+        Session session = (Session) o;
+        return meetingDay == session.meetingDay && meetingStartTime.equals(session.meetingStartTime) && meetingEndTime.equals(session.meetingEndTime) && meetingRoom.equals(session.meetingRoom);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(meetingDay, meetingStartTime, meetingEndTime, meetingRoom);
     }
 }
