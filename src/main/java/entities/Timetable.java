@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -7,7 +8,7 @@ import java.util.HashSet;
  */
 
 public class Timetable {
-    private final Meeting[] meetings;
+    private final ArrayList<Meeting> meetings;
     private final HashSet<String> tags;
 
     /**
@@ -15,7 +16,7 @@ public class Timetable {
      * @param meetings an array of meetings (Lectures/Tutorials) belonging to the course
      * @param tags an array of Strings containing various tags that we will use to filter timetables.
      */
-    public Timetable(Meeting[] meetings, HashSet<String> tags) {
+    public Timetable(ArrayList<Meeting> meetings, HashSet<String> tags) {
         this.meetings = meetings;
         this.tags = tags;
     }
@@ -24,7 +25,7 @@ public class Timetable {
      * A getter for the meetings.
      * @return the course meetings as a Meeting array
      */
-    public Meeting[] getMeetings() {
+    public ArrayList<Meeting> getMeetings() {
         return meetings;
     }
 
