@@ -7,7 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * A timetable validator class that checks if a timetable has no time conflicts.
+ * A timetable validator class that checks if a timetable has no time conflicts
  */
 public class TimetableValidator {
     /**
