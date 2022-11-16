@@ -15,7 +15,7 @@ public class TimetableValidator {
      * @param session2 second session of a meeting
      * @return true if the sessions overlap with each other, otherwise false
      */
-    public static boolean sessionOverlap(Session session1, Session session2){
+    private static boolean sessionOverlap(Session session1, Session session2){
         LocalTime s1start = session1.getMeetingStartTime().plusMinutes(10);
         LocalTime s2start = session2.getMeetingStartTime().plusMinutes(10);
         LocalTime s1end = session1.getMeetingEndTime();
@@ -23,22 +23,7 @@ public class TimetableValidator {
         DayOfWeek s1day = session1.getMeetingDay();
         DayOfWeek s2day = session2.getMeetingDay();
 
-        if (s1day.equals(s2day)){
-            if (s1start.equals(s2start) || s1end.equals(s2end)){
-                return true;
-            } else {
-                if (s1start.isBefore(s2start)){
-                    if (s1end.isAfter(s2start)){
-                        return true;
-                    }
-                } else {
-                    if (s2end.isAfter(s1start)){
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
+        return s1day.equals(s2day) && s1start.isBefore(s2end) && s1end.isAfter(s2start);
     }
 
     /**
@@ -63,13 +48,13 @@ public class TimetableValidator {
      */
     public static boolean validateMeetings(List<Meeting> meetings){
         for (int i = 0; i < meetings.size(); i++){
-            for (int j = 0; j < meetings.size(); j++){
+            for (int j = i + 1; j < meetings.size(); j++){
                 if (meetingOverlap((meetings.get(i)), meetings.get(j))){
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
 }

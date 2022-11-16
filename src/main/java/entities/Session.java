@@ -29,7 +29,7 @@ public class Session {
 
     /**
      * A getter for the session day.
-     * @return the session day as a String
+     * @return the session day as a DayOfWeek Object
      */
     public DayOfWeek getMeetingDay() {
         return meetingDay;
@@ -84,5 +84,13 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(meetingDay, meetingStartTime, meetingEndTime, meetingRoom);
+    }
+
+    /**
+     * Returns a unique hash representing the time signature of a Session e.g. MONDAY12:0013:00
+     * @return String representation of the time signature
+     */
+    public String timeHash() {
+        return meetingDay.toString() + meetingStartTime.toString() + meetingEndTime.toString();
     }
 }
