@@ -44,11 +44,15 @@ public class API {
         in.close();
 
         // Parse the returned JSON into a JSON object
-        return new JSONObject(content.toString());
+        String res = content.toString();
+        if (res.equals("[]")){
+            res = "{}";
+        }
+        return new JSONObject(res);
     }
 
     /**
-     * Look up Courses from a organisation on the UofT Arts & Science API
+     * Look up Courses from an organisation on the UofT Arts & Science API
      * or local cache. Get Course key and Course Title in a HashMap and cache the result
      * @param year is the year when the course takes place
      * @param semester relevant Semester enum
@@ -63,7 +67,7 @@ public class API {
         }
 
         // API_URL/{YEAR}9/course?org={ORG_CODE}
-        String url = String.format("%s9/courses?org=%s", year, org);
+        String url = String.format("%s9/courses?code=%s", year, org);
         JSONObject res = API.request(url);
 
         // Store the Course Key and Title as KV pairs
@@ -90,7 +94,7 @@ public class API {
     /**
      * Build a Course object using key looked up from a SimpleCourse API Call
      * @param key Course key used to identify course in response
-     * @param rmp the option to lookup RateMyProffesor score
+     * @param rmp the option to lookup RateMyProfessor score
      * @return a Course object of the course looked up
      * @throws IOException if the HTTP request fails
      */
@@ -113,12 +117,14 @@ public class API {
             String meetingKey = meetings.next();
             JSONObject meeting = meetingsObject.getJSONObject(meetingKey);
 
-            // Find instructor name
-            String instructor = "";
-            // Check if instructor value is not empty array
-            if (meeting.get("instructors") instanceof JSONObject){
-                JSONObject instructorsObject = meeting.getJSONObject("instructors");
-                Iterator<String> instructors = instructorsObject.keys();
+            // Check if the meeting is cancelled
+            if (!meeting.getString("cancel").equals("Cancelled")) {
+                // Find instructor name
+                String instructor = "";
+                // Check if instructor value is not empty array
+                if (meeting.get("instructors") instanceof JSONObject) {
+                    JSONObject instructorsObject = meeting.getJSONObject("instructors");
+                    Iterator<String> instructors = instructorsObject.keys();
 
                 // Get first instructor
                 if (instructors.hasNext()) {
@@ -138,25 +144,30 @@ public class API {
                     meeting.getInt("actualWaitlist")
             );
 
-            // Retrieve the sessions withing the meeting and iterate over the keys
-            JSONObject sessionsObject = meeting.getJSONObject("schedule");
-            Iterator<String> sessions = sessionsObject.keys();
-            while(sessions.hasNext()) {
-                String sessionKey = sessions.next();
-                JSONObject session = sessionsObject.getJSONObject(sessionKey);
+                // Retrieve the sessions withing the meeting and iterate over the keys
+                JSONObject sessionsObject = meeting.getJSONObject("schedule");
+                Iterator<String> sessions = sessionsObject.keys();
+                while (sessions.hasNext()) {
+                    String sessionKey = sessions.next();
+                    JSONObject session = sessionsObject.getJSONObject(sessionKey);
 
-                // Create a new Session object and push it onto the cached Meeting
-                courseBuilder.newSession(
-                        session.getString("meetingDay"),
-                        session.getString("meetingStartTime"),
-                        session.getString("meetingEndTime"),
-                        session.getString("assignedRoom1"),
-                        rmp
-                );
-                courseBuilder.pushSession();
+                    // Create a new Session object and push it onto the cached Meeting
+                    String startTime = session.get("meetingStartTime").toString();
+                    String endTime = session.get("meetingEndTime").toString();
+                    if (!startTime.equals("null") && !endTime.equals("null")) {
+                        courseBuilder.newSession(
+                                Objects.toString(session.get("meetingDay"), ""),
+                                startTime,
+                                endTime,
+                                Objects.toString(session.get("assignedRoom1"), ""),
+                                rmp
+                        );
+                    }
+                    courseBuilder.pushSession();
+                }
+                // Push the Meeting object into the cached Course object
+                courseBuilder.pushMeeting();
             }
-            // Push the Meeting object into the cached Course object
-            courseBuilder.pushMeeting();
         }
 
         return courseBuilder.build();
