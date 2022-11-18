@@ -11,11 +11,20 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * A gateway for the RateMyProf API that has public static methods for getting the number of professors associated
+ * with UofT on the RateMyProf database, the number of pages of professors, and the professors mapped with their score
+ * provided that their score is a defined number
+ */
 public class RateMyProf {
     private static Map<String, String> professors;
 
-
+    /**
+     * Make an HTTP Get request to the RateMyProf database and return the data as a JSONObject
+     * @param page the page to query from the RateMyProf database
+     * @return JSON object containing the response
+     * @throws IOException if the HTTP request fails
+     */
     private static JSONObject request(String page) throws IOException {
         // Create a URL object and make a GET request
         String url = String.format("https://www.ratemyprofessors.com/filter/professor/?&page=%s&filter=teacherlastname_sort_s+asc&query=*%%3A*&queryoption=TEACHER&queryBy=schoolId&sid=1484", page);
@@ -39,26 +48,31 @@ public class RateMyProf {
      * Find the number of professors currently stored by rate my prof
      * @return the number of professors as an int
      */
-    private static int getNumberProfessors() throws IOException {
+    public static int getNumberProfessors() throws IOException {
         return (int) request("1").get("searchResultsTotal");
     }
 
-    private static int getNumberPages() throws IOException {
+    /**
+     * Calculate the maximum number of pages of professors in the UofT RateMyProf database using the number of professors
+     * @return an int of the number of pages
+     * @throws IOException if the HTTP request fails
+     */
+    public static int getNumberPages() throws IOException {
         return (getNumberProfessors() / 20) + 1;
     }
 
     /**
      * Return a HashMap mapping professors to their RateMyProf score as a Double
      * The keys are of String type and follow the format: "[first name] [last name], [department]"
-     * @param pages
-     * @return
-     * @throws IOException
+     * @param pages the number of pages to check for professors (conservative overestimate)
+     * @return HashMap mapping professors to their RateMyProf score as a Double
+     * @throws IOException if the HTTP request fails
      */
-    private static Map<String, Double> getProfessors(int pages) throws IOException {
+    public static Map<String, Double> getProfessors(int pages) throws IOException {
         HashMap<String, Double> professors = new HashMap<>();
 
         // iterate through each page
-        for (int i = 0; i <= pages; i++) {
+        for (int i = 1; i <= pages; i++) {
             JSONObject data = request(String.valueOf(i));
             JSONArray professor_list = data.getJSONArray("professors");
 
@@ -76,17 +90,5 @@ public class RateMyProf {
             }
         }
         return professors;
-    }
-
-
-    public static void main(String[] args) throws IOException {
-        JSONObject data = request("199");
-        System.out.println(data);
-        System.out.println(getNumberProfessors());
-        System.out.println(getNumberPages());
-        JSONArray profs = data.getJSONArray("professors");
-        System.out.println(profs.length());
-        System.out.println(getProfessors(getNumberPages()));
-
     }
 }
