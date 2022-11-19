@@ -39,6 +39,7 @@ public class Tagger {
                     has_friday = true;
                 }
                 numSessions++;
+
                 timesOfDayHeavy(session, timesOfDay);
             }
         }
