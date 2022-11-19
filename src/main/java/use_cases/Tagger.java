@@ -1,28 +1,20 @@
 package use_cases;
 
 import entities.Meeting;
+import entities.Session;
 import entities.Timetable;
 
+import java.util.HashSet;
+
 public class Tagger {
-    public static Timetable main(Timetable timetable) {
+    public static HashSet<String> main(Timetable timetable) {
+        HashSet<String> tags = new HashSet<>();
 
-    }
-
-    public static Timetable morningCentered(Timetable timetable) {
-        // only morning, nothing else
         for (Meeting meeting: timetable.getMeetings()) {
-            
+            for (Session session : meeting.getSessions()) {
+
+            }
         }
+        return tags;
     }
-
-    public static Timetable afternoonCentered(Timetable timetable) {
-        //
-    }
-
-
-
-    // balanced
-    // spread out / not spread out
-    // lunch break available
-    // long weekend (relatively free friday/monday) or maybe just free day in general for any day of the week
 }
