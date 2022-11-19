@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  * Controller for the main view
  */
 
-public class AppController implements Initializable {
+public class appController implements Initializable {
 
     @FXML
     private Button generateButton;
@@ -39,7 +39,7 @@ public class AppController implements Initializable {
     @FXML
     private TextField yearField;
 
-    public AppController() throws IOException {
+    public appController() throws IOException {
     }
 
     @FXML
