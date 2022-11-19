@@ -17,9 +17,4 @@ public class Tagger {
         }
         return tags;
     }
-
-    //Course Density function
-    public void courseDensity(Timetable timetable) {
-        
-    }
 }
