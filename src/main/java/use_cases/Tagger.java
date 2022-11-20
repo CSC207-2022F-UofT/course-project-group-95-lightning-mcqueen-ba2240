@@ -46,12 +46,17 @@ public class Tagger {
 
         // check for morning/afternoon/evening heavy
         Integer majority = numSessions / 2;
+        boolean added = false;
         for (String key: timesOfDay.keySet()) {
             if (timesOfDay.get(key) > majority) {
+                // if majority of classes are in one block, then it is heavy in that block
                 tags.add(key + "-heavy");
-            } else {
-                tags.add("Balanced");
+                added = true;
             }
+        }
+        if (!added) {
+            // if no 'heavy' tags are added, then classify the timetable as balanced
+            tags.add("Balanced");
         }
         checkLongWeekend(tags, has_monday, has_friday);
 
@@ -71,6 +76,12 @@ public class Tagger {
         }
     }
 
+    /**
+     * Increment the counts of morning, afternoon, or evening in timesOfDay
+     * according to when the start time of the given session is
+     * @param session the current session
+     * @param timesOfDay the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
+     */
     public static void timesOfDayHeavy(Session session, HashMap<String, Integer> timesOfDay) {
         LocalTime start = session.getMeetingStartTime();
 
