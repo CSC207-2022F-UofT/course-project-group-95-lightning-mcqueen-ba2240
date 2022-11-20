@@ -18,8 +18,10 @@ import java.time.LocalTime;
 public class Tagger {
     public static HashSet<String> main(Timetable timetable) {
         HashSet<String> tags = new HashSet<>();
-        boolean has_monday = false;
-        boolean has_friday = false;
+
+        HashMap<String, Boolean> has_days = new HashMap<>();
+        has_days.put("has_monday", false);
+        has_days.put("has_friday", false);
 
         HashMap<String, Integer> timesOfDay = new HashMap<>();
         timesOfDay.put("Morning", 0);
@@ -32,15 +34,11 @@ public class Tagger {
         for (Meeting meeting: timetable.getMeetings()) {
             for (Session session : meeting.getSessions()) {
                 // check if session is on Monday or Friday and update the loop variables
-                if (session.getMeetingDay().equals(DayOfWeek.MONDAY)) {
-                    has_monday = true;
-                }
-                if (session.getMeetingDay().equals(DayOfWeek.FRIDAY)) {
-                    has_friday = true;
-                }
+
                 numSessions++;
 
                 timesOfDayHeavy(session, timesOfDay);
+                updateMondayFriday(session, has_days);
             }
         }
 
@@ -53,21 +51,27 @@ public class Tagger {
                 tags.add("Balanced");
             }
         }
-        checkLongWeekend(tags, has_monday, has_friday);
+
+        // check for long weekend
+        if (!(has_days.get("has_monday") && has_days.get("has_friday"))) {
+            tags.add("Long Weekend");
+        }
+
 
         return tags;
     }
 
     /**
-     * Add the tag "Long Weekend" into tags if the timetable has either no classes on Monday or
-     * no classes on Friday (3-day weekend)
-     * @param tags the tags to be associated with the timetable
-     * @param has_monday boolean value whether the timetable has Monday classes
-     * @param has_friday boolean value whether the timetable has Friday classes
+     * Update whether the timetable has at least one Monday or Friday class
+     * @param session one of the sessions of the timetable
+     * @param has_days HashMap that stores whether the timetable has a Monday or Friday class
      */
-    private static void checkLongWeekend(HashSet<String> tags, boolean has_monday, boolean has_friday) {
-        if (!(has_monday && has_friday)) {
-            tags.add("Long Weekend");
+    private static void updateMondayFriday(Session session, HashMap<String, Boolean> has_days) {
+        if (session.getMeetingDay().equals(DayOfWeek.MONDAY)) {
+            has_days.put("has_monday", true);
+        }
+        if (session.getMeetingDay().equals(DayOfWeek.FRIDAY)) {
+            has_days.put("has_friday", true);
         }
     }
 
