@@ -68,7 +68,14 @@ public class Tagger {
         return tags;
     }
 
-    //Function to check if 2 sessions are consecutive
+    /**
+     * Return if 2 sessions are consecutive (if they have the same meeting day and the
+     * start time of one is equal to the end time of another)
+     *
+     * @param session1 one session being compared
+     * @param session2 other one session being compared
+     * @return True if the two sessions are consecutive, False if not
+     */
     private static Boolean consecutiveSessions(Session session1, Session session2) {
         if ((session1 != null) && (session1.getMeetingDay() == session2.getMeetingDay())) {
             return (session1.getMeetingEndTime().equals(session2.getMeetingStartTime())) ||
@@ -77,9 +84,16 @@ public class Tagger {
         return false;
     }
 
-    //Function to assign values to each element in the consecutiveCount list, where each element is the day's density of
-    //courses.
-    private static void checkDensity(Session lastSession, Session currentSession, List<Integer> consecutiveCount) {
+    /**
+     * Assign values to each element in the consecutiveCount list, where each element is the day's density of courses
+     * Check if number of consecutive courses per day - if there's more than 3 days, each with 3 or more consecutive courses
+     *
+     * @param currentSession the current session
+     * @param lastSession the session prior the current session
+     * @param consecutiveCount list with each index representing a day and the value at each index representing
+     *                         the number of consecutive courses within that day
+     */
+    private static void checkDensity(Session currentSession, Session lastSession, List<Integer> consecutiveCount) {
         if (consecutiveSessions(lastSession, currentSession)) {
             int index = currentSession.getMeetingDay().getValue();
             consecutiveCount.set(index, consecutiveCount.get(index) + 1);
@@ -91,7 +105,8 @@ public class Tagger {
      * (with 3 consecutive sessions in a day)
      *
      * @param tags the set of tags for the timetable
-     * @param consecutiveCount
+     * @param consecutiveCount list with each index representing a day and the value at each index representing
+     *                         the number of consecutive courses within that day
      */
     private static void addDensityTag(HashSet<String> tags, List<Integer> consecutiveCount) {
         int numberOfConsecutiveDays = 0;
@@ -121,8 +136,8 @@ public class Tagger {
     }
 
     /**
-     * Increment the counts of morning, afternoon, or evening in timesOfDay
-     * according to when the start time of the given session is
+     * Increment the counts of morning, afternoon, or evening in timesOfDay according to
+     * when the start time of the given session is
      *
      * @param session the current session
      * @param timesOfDay the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
