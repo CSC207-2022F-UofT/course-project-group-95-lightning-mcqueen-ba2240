@@ -135,25 +135,4 @@ public class TimetableFactory {
         return timetables;
     }
 
-    public static void main(String[] args) throws IOException {
-        Instant start = Instant.now();
-        API api = new API();
-        Course one = api.getCourse("CSC236H1-F-20229", false);
-        Course two = api.getCourse("CSC207H1-F-20229", false);
-        Course three = api.getCourse("STA247H1-F-20229", false);
-        Course four = api.getCourse("GGR101H1-F-20229", false);
-        Course five = api.getCourse("MAT235Y1-Y-20229", false);
-
-        List<Course> courses = new ArrayList<>();
-        courses.add(one);
-        courses.add(two);
-        courses.add(three);
-        courses.add(four);
-        courses.add(five);
-
-        List<Timetable> allMeetings = generate(courses);
-        System.out.println(allMeetings.size());
-        Instant end = Instant.now();
-        System.out.println(Duration.between(start, end));
-    }
 }
