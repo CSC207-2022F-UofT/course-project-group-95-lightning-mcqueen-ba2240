@@ -1,7 +1,9 @@
 package entities;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * This dataclass stores the information for a given timetable.
@@ -35,5 +37,14 @@ public class Timetable {
      */
     public HashSet<String> getTags() {
         return tags;
+    }
+
+    public List<Session> getSortedSessions() {
+        List<Session> sessions = new ArrayList<>();
+        for (Meeting meeting: this.meetings){
+            sessions.addAll(meeting.getSessions());
+        }
+        Collections.sort(sessions);
+        return sessions;
     }
 }
