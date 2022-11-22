@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * This dataclass stores the information for a given session.
  */
-public class Session {
+public class Session implements Comparable<Session>{
     private final DayOfWeek meetingDay;
     private final LocalTime meetingStartTime;
     private final LocalTime meetingEndTime;
@@ -84,5 +84,17 @@ public class Session {
     @Override
     public int hashCode() {
         return Objects.hash(meetingDay, meetingStartTime, meetingEndTime, meetingRoom);
+    }
+
+    @Override
+    public int compareTo(Session o) {
+        if (this.meetingDay.getValue() < o.meetingDay.getValue()) {
+            return 1;
+        }
+        if (this.meetingStartTime.isBefore(o.meetingStartTime)) {
+            return 1;
+        }
+        return -1;
+        //No need to sort on invalid timetables therefore no overlap i.e., 0 case
     }
 }
