@@ -1,24 +1,23 @@
 package use_cases;
 
-import entities.Course;
-import entities.Meeting;
 import entities.Session;
+import entities.Meeting;
+import entities.Course;
 import entities.Timetable;
-import use_cases.Tagger;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import use_cases.Tagger;
 
+import java.security.KeyStore;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.HashMap;
-import java.util.HashSet;
 
 
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TaggerTest {
-    public void TestConsecutiveSessionsForConsectiveSession() {
+    class TaggerTest {
+
         Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0),
                 "");
         Meeting m1 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s1);
@@ -50,7 +49,6 @@ public class TaggerTest {
         Session s7 = new Session(DayOfWeek.TUESDAY, LocalTime.of(3, 0), LocalTime.of(4,0),
                 "");
         Meeting m7 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s7);
-
         Session s8 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(3, 0), LocalTime.of(4,0),
                 "");
         Meeting m8 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s8);
@@ -61,10 +59,14 @@ public class TaggerTest {
 
         Course c3 = new Course(0, "", "", m6, m7, m8, m9);
 
-        List<Timetable> timetables = TimetableFactory.generate(List.of(c1, c2, c3));
+        ArrayList<Meeting> meetings1 = new ArrayList<Meeting>(Arrays.asList(m1, m2));
+        Timetable timetable1 = new Timetable(meetings1, new HashSet<>());
+
+        HashSet<String> tags = Tagger.main(timetable1);
+        HashSet<String> runOutput = new HashSet<>(Arrays.asList("Balanced", "Long Weekend"));
+
+        if (tags.containsAll("Balanced", "Long Weekend")) {expectedOutput = true};
 
 
 
-        Assertions.assertEquals(consecutiveSession.)
     }
-}
