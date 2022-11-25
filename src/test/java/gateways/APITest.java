@@ -48,4 +48,14 @@ public class APITest {
         Assertions.assertEquals(csc207Meeting.getType(), Meeting.Type.LEC);
         Assertions.assertEquals(csc207Meeting.getInstructor(), "P Gries");
     }
+
+    @Test
+    public void testAPIDefinitive() throws IOException {
+        API api = new API();
+        HashMap<String, String> courses = api.getSimpleCourses("2022", API.Semester.SPRING, "");
+
+        for (String key: courses.values()){
+            Assertions.assertNotNull(api.getCourse(key, false));
+        }
+    }
 }
