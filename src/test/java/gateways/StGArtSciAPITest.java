@@ -1,7 +1,8 @@
 package gateways;
 
-import entities.Course;
-import entities.Meeting;
+import entities.base.Course;
+import entities.base.Meeting;
+import entities.stgartsci.StGArtSciMeeting;
 import gateways.course_api.CourseAPI;
 import gateways.course_api.StGArtSciAPI;
 import org.junit.jupiter.api.Assertions;
@@ -47,7 +48,7 @@ public class StGArtSciAPITest {
         Meeting csc207Meeting = csc207.getMeetings().get(5);
 
         Assertions.assertEquals(csc207Meeting.getSection(), "0101");
-        Assertions.assertEquals(csc207Meeting.getType(), Meeting.Type.LEC);
+        Assertions.assertEquals(csc207Meeting.getType(), StGArtSciMeeting.StGArtSciType.LEC);
         Assertions.assertEquals(csc207Meeting.getInstructor(), "P Gries");
     }
 

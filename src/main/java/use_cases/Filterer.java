@@ -3,7 +3,7 @@ package use_cases;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import entities.Timetable;
+import entities.base.Timetable;
 
 /**
  * This class returns a sublist of the ArrayList containing all timetables that have all the tags in desired_tags.

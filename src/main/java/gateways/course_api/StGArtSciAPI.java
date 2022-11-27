@@ -1,6 +1,6 @@
 package gateways.course_api;
 
-import entities.Course;
+import entities.base.Course;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -119,7 +119,6 @@ public class StGArtSciAPI extends CourseAPI{
                                 Objects.toString(session.get("meetingDay"), ""),
                                 startTime,
                                 endTime,
-                                Objects.toString(session.get("assignedRoom1"), ""),
                                 rmp
                         );
                     }

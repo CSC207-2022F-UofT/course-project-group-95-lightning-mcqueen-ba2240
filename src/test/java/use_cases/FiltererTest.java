@@ -2,8 +2,8 @@ package use_cases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import entities.Meeting;
-import entities.Timetable;
+import entities.base.Meeting;
+import entities.base.Timetable;
 import org.junit.jupiter.api.Test;
 
 

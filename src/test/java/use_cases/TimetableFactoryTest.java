@@ -1,9 +1,11 @@
 package use_cases;
 
-import entities.Course;
-import entities.Meeting;
-import entities.Session;
-import entities.Timetable;
+import entities.base.Course;
+import entities.base.Timetable;
+import entities.base.Meeting;
+import entities.base.Session;
+import entities.stgartsci.StGArtSciMeeting;
+import entities.stgartsci.StGArtSciMeeting.StGArtSciType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -18,14 +20,14 @@ public class TimetableFactoryTest {
      */
     @Test
     public void testMeetingCollapse() {
-        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0), "BA2165");
-        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0), "BA2165");
+        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
+        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0));
 
-        Session session3 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0), "BA2175");
-        Session session4 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0), "BA2175");
+        Session session3 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
+        Session session4 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0));
 
-        Meeting meeting1 = new Meeting("0101", Meeting.Type.TUT, "L McQueen", 100, 70, 0, session1, session2);
-        Meeting meeting2 = new Meeting("0102", Meeting.Type.TUT, "L McQueen", 100, 70, 0, session3, session4);
+        Meeting meeting1 = new StGArtSciMeeting("0101", StGArtSciType.TUT, "L McQueen", 100, 70, 0, session1, session2);
+        Meeting meeting2 = new StGArtSciMeeting("0102", StGArtSciType.TUT, "L McQueen", 100, 70, 0, session3, session4);
 
         Course course = new Course(0, "", "", meeting1, meeting2);
 
@@ -39,36 +41,36 @@ public class TimetableFactoryTest {
      */
     @Test
     public void testPermutations() {
-        Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m1 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s1);
+        Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m1 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s1);
 
-        Session s2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m2 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s2);
+        Session s2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m2 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s2);
 
-        Session s3 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m3 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s3);
+        Session s3 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m3 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s3);
 
         Course c1 = new Course(0, "", "", m1, m2, m3);
 
-        Session s4 = new Session(DayOfWeek.MONDAY, LocalTime.of(2, 0), LocalTime.of(3,0), "");
-        Meeting m4 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s4);
+        Session s4 = new Session(DayOfWeek.MONDAY, LocalTime.of(2, 0), LocalTime.of(3,0));
+        Meeting m4 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s4);
 
-        Session s5 = new Session(DayOfWeek.TUESDAY, LocalTime.of(2, 0), LocalTime.of(3,0), "");
-        Meeting m5 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s5);
+        Session s5 = new Session(DayOfWeek.TUESDAY, LocalTime.of(2, 0), LocalTime.of(3,0));
+        Meeting m5 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s5);
 
         Course c2 = new Course(0, "", "", m4, m5);
 
-        Session s6 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m6 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s6);
+        Session s6 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m6 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s6);
 
-        Session s7 = new Session(DayOfWeek.TUESDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m7 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s7);
+        Session s7 = new Session(DayOfWeek.TUESDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m7 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s7);
 
-        Session s8 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m8 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s8);
+        Session s8 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m8 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s8);
 
-        Session s9 = new Session(DayOfWeek.THURSDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m9 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s9);
+        Session s9 = new Session(DayOfWeek.THURSDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m9 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s9);
 
         Course c3 = new Course(0, "", "", m6, m7, m8, m9);
 
@@ -83,36 +85,36 @@ public class TimetableFactoryTest {
      */
     @Test
     public void testPermutationsConflicts() {
-        Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m1 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s1);
+        Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m1 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s1);
 
-        Session s2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m2 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s2);
+        Session s2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m2 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s2);
 
-        Session s3 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m3 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s3);
+        Session s3 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m3 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s3);
 
         Course c1 = new Course(0, "", "", m1, m2, m3);
 
-        Session s4 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0), "");
-        Meeting m4 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s4);
+        Session s4 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
+        Meeting m4 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s4);
 
-        Session s5 = new Session(DayOfWeek.TUESDAY, LocalTime.of(2, 0), LocalTime.of(3,0), "");
-        Meeting m5 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s5);
+        Session s5 = new Session(DayOfWeek.TUESDAY, LocalTime.of(2, 0), LocalTime.of(3,0));
+        Meeting m5 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s5);
 
         Course c2 = new Course(0, "", "", m4, m5);
 
-        Session s6 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m6 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s6);
+        Session s6 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m6 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s6);
 
-        Session s7 = new Session(DayOfWeek.TUESDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m7 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s7);
+        Session s7 = new Session(DayOfWeek.TUESDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m7 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s7);
 
-        Session s8 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m8 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s8);
+        Session s8 = new Session(DayOfWeek.WEDNESDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m8 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s8);
 
-        Session s9 = new Session(DayOfWeek.THURSDAY, LocalTime.of(3, 0), LocalTime.of(4,0), "");
-        Meeting m9 = new Meeting("", Meeting.Type.LEC, "", 0, 0, 0, s9);
+        Session s9 = new Session(DayOfWeek.THURSDAY, LocalTime.of(3, 0), LocalTime.of(4,0));
+        Meeting m9 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s9);
 
         Course c3 = new Course(0, "", "", m6, m7, m8, m9);
 

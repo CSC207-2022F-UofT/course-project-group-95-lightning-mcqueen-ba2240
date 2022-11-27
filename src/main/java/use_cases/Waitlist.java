@@ -1,6 +1,6 @@
 package use_cases;
 
-import entities.Meeting;
+import entities.base.Meeting;
 
 import java.util.ArrayList;
 import java.util.List;

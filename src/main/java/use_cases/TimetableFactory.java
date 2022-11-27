@@ -1,13 +1,10 @@
 package use_cases;
 
-import entities.Course;
-import entities.Meeting;
-import entities.Timetable;
-import gateways.API;
+import entities.base.Collapsible;
+import entities.base.Course;
+import entities.base.Meeting;
+import entities.base.Timetable;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,11 +20,11 @@ public class TimetableFactory {
     private static  void collapseToList(List<Meeting> meetings, Meeting meeting){
         boolean contains = false;
         for (Meeting m: meetings){
-            // If both meetings have an identical time signature they
-            // can be considered as the same meeting so long as it is not a LEC
-            if (m.timeHash().equals(meeting.timeHash())){
-                contains = true;
-                break;
+            if (m instanceof Collapsible && meeting instanceof Collapsible){
+                if (((Collapsible) m).isCollapsible(meeting)){
+                    contains = true;
+                    ((Collapsible) m).collapse(meeting);
+                }
             }
         }
         // If the meeting does not share a time signature
@@ -41,32 +38,25 @@ public class TimetableFactory {
      * @param course The course to be collapsed into a list
      * @return Sorted List of Lists of Meetings by Meeting Type
      */
-    private static List<List<Meeting>> sortMeetings(Course course) {
-        List<Meeting> lectures = new ArrayList<>();
-        List<Meeting> tutorials = new ArrayList<>();
-        List<Meeting> practicals = new ArrayList<>();
+    private static List<List<Meeting>> sortByType(Course course) {
+        List<List<Meeting>> sorted = new ArrayList<>();
 
         for (Meeting meeting: course.getMeetings()){
-            switch (meeting.getType()){
-                case LEC:
-                    lectures.add(meeting);
+            // Check if sorted list exists for Meeting Type
+            boolean exists = false;
+            for (List<Meeting> list: sorted){
+                if (list.get(0).getType().equals(meeting.getType())){
+                    exists = true;
+                    collapseToList(list, meeting);
                     break;
-                case PRA:
-                    collapseToList(practicals, meeting);
-                    break;
-                case TUT:
-                    collapseToList(tutorials, meeting);
-                    break;
+                }
             }
-        }
 
-        List<List<Meeting>> sorted = new ArrayList<>();
-        if (!lectures.isEmpty()){
-            sorted.add(lectures);
-        } if (!tutorials.isEmpty()){
-            sorted.add(tutorials);
-        } if (!practicals.isEmpty()){
-            sorted.add(practicals);
+            if (!exists){
+                List<Meeting> list = new ArrayList<>();
+                collapseToList(list, meeting);
+                sorted.add(list);
+            }
         }
 
         return sorted;
@@ -125,7 +115,7 @@ public class TimetableFactory {
     public static List<Timetable> generate(List<Course> courses){
         List<List<Meeting>> all = new ArrayList<>();
         for (Course course:courses) {
-            all.addAll(sortMeetings(course));
+            all.addAll(sortByType(course));
         }
         List<List<Meeting>> combinations = generateCombinations(new ArrayList<>(), all, 0);
         List<Timetable> timetables = new ArrayList<>();
@@ -134,5 +124,4 @@ public class TimetableFactory {
         }
         return timetables;
     }
-
 }
