@@ -1,4 +1,4 @@
-package use_cases;
+package use_cases.course_builder;
 
 import entities.base.Course;
 import entities.base.Meeting;
@@ -14,7 +14,7 @@ import java.util.HashMap;
  * data provided by the API to make the entities required.
  * Caches RateMyProf scores to prevent repeated calls
  */
-public class StGArtSciCourseBuilder {
+public class StGArtSciCourseBuilder implements CourseBuilder{
     private Course course;
     private Meeting meeting;
     private Session session;
@@ -70,7 +70,7 @@ public class StGArtSciCourseBuilder {
     /**
      * Check the RateMyProfessor in cache or API, save if not in cache
      */
-    public void checkRMP() {
+    private void checkRMP() {
         String instructor = meeting.getInstructor();
         if (!instructor.isEmpty()){
             if (rmpCache.containsKey(instructor)){
@@ -81,6 +81,9 @@ public class StGArtSciCourseBuilder {
         }
     }
 
+    /**
+     * Push the Session object from the cache onto the Meeting
+     */
     public void pushSession() {
         meeting.addSessions(session);
     }

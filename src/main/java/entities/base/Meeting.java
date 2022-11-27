@@ -172,20 +172,12 @@ public class Meeting {
         return hash;
     }
 
-    public interface Type{
-        static Type parse(String s) {
-            return null;
-        }
-    }
+    public interface Type{}
 
     /**
      * Enum for Meeting Type
      */
     public enum DefaultType implements Type{
         DEFAULT;
-
-        public static Type parse(String s) {
-            return DEFAULT;
-        }
     }
 }

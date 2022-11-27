@@ -2,7 +2,8 @@ package gateways.course_api;
 
 import entities.base.Course;
 import org.json.JSONObject;
-import use_cases.StGArtSciCourseBuilder;
+import use_cases.course_builder.CourseBuilder;
+import use_cases.course_builder.StGArtSciCourseBuilder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.*;
  * cache for repeated lookups
  */
 abstract public class CourseAPI {
-    protected final StGArtSciCourseBuilder courseBuilder = new StGArtSciCourseBuilder();
+    protected final CourseBuilder courseBuilder = new StGArtSciCourseBuilder();
     protected final HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 
     /**

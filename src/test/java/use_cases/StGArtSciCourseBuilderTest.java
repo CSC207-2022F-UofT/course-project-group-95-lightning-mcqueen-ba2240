@@ -6,6 +6,7 @@ import entities.base.Session;
 import entities.stgartsci.StGArtSciMeeting;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import use_cases.course_builder.StGArtSciCourseBuilder;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
