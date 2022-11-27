@@ -132,6 +132,9 @@ public class StGArtSciAPI extends CourseAPI{
         return courseBuilder.build();
     }
 
+    /**
+     * Enum to store Semester and Semester Code
+     */
     public enum StGArtSciSemester implements Semester{
         FALL("F"),
         SPRING("S"),

@@ -71,7 +71,7 @@ abstract public class CourseAPI {
     public abstract Course getCourse(String key, boolean rmp) throws IOException;
 
     /**
-     * Enum to store Semester and Semester Code
+     * Interface for enum to store Semester and Semester Code
      */
     public interface Semester {
         boolean match(String code);
