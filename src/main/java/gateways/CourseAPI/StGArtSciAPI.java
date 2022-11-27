@@ -1,55 +1,15 @@
-package gateways;
+package gateways.CourseAPI;
 
 import entities.Course;
 import org.json.JSONObject;
-import use_cases.CourseBuilder;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Objects;
 
-/**
- * A gateway for the UofT Arts and Science API that communicates
- * with the CourseFactory use case to return Course objects and
- * a simplified list of courses for lookup. Stores result in a
- * cache for repeated lookups
- */
-public class API {
+public class StGArtSciAPI extends CourseAPI{
     private static final String API_URL = "https://timetable.iit.artsci.utoronto.ca/api/";
-    private final CourseBuilder courseBuilder = new CourseBuilder();
-
-    private final HashMap<String, HashMap<String, String>> simpleCourseCache = new HashMap<>();
-
-    /**
-     * Make an HTTP Get request to the UofT Arts and Science API and return the data as a JSONObject
-     * @param url API endpoint and params
-     * @return JSON object containing the response
-     * @throws IOException if the HTTP request fails
-     */
-    private static JSONObject request(String url) throws IOException {
-        // Create a URL object and make a GET request
-        URL api = new URL(API_URL + url);
-        URLConnection con = api.openConnection();
-
-        // Read the data return and store it in a String
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder content = new StringBuilder();
-        while ((inputLine = in.readLine()) != null) {
-            content.append(inputLine);
-        }
-        in.close();
-
-        // Parse the returned JSON into a JSON object
-        String res = content.toString();
-        if (res.equals("[]")){
-            res = "{}";
-        }
-        return new JSONObject(res);
-    }
 
     /**
      * Look up Courses from an organisation on the UofT Arts & Science API
@@ -60,15 +20,15 @@ public class API {
      * @return a HashMap with the CourseKey as the Key and the Course Code and Title as the Value
      * @throws IOException if the HTTP request fails
      */
-    public HashMap<String, String> getSimpleCourses(String year, Semester semester, String org) throws IOException {
+    public HashMap<String, String> getNames(String year, Semester semester, String org) throws IOException {
         // Check cache
-        if (simpleCourseCache.containsKey(org)){
-            return simpleCourseCache.get(org);
+        if (cache.containsKey(org)){
+            return cache.get(org);
         }
 
         // API_URL/{YEAR}9/course?org={ORG_CODE}
-        String url = String.format("%s9/courses?code=%s", year, org);
-        JSONObject res = API.request(url);
+        String params = String.format("%s9/courses?code=%s", year, org);
+        JSONObject res = request(API_URL + params);
 
         // Store the Course Key and Title as KV pairs
         HashMap<String, String> courses = new HashMap<>();
@@ -79,14 +39,14 @@ public class API {
 
             String section = course.getString("section");
             // Store Courses that take place within the selected semester or for both semesters
-            if (section.equals(semester.code) || section.equals(Semester.YEAR.code)){
+            if (semester.match(section)){
                 // Value: Course Code: Course Title
                 courses.put(key, String.format("%s: %s", course.get("code"), course.get("courseTitle")));
             }
         }
 
         // Add to cache
-        simpleCourseCache.put(org, courses);
+        cache.put(org, courses);
 
         return courses;
     }
@@ -100,8 +60,8 @@ public class API {
      */
     public Course getCourse(String key, boolean rmp) throws IOException {
         // API_URL/{YEAR}9/course?code={CODE}
-        String url = String.format("%s9/courses?code=%s", key.substring(11, 15), key.substring(0, 8));
-        JSONObject res = API.request(url).getJSONObject(key);
+        String params = String.format("%s9/courses?code=%s", key.substring(11, 15), key.substring(0, 8));
+        JSONObject res = CourseAPI.request(API_URL + params).getJSONObject(key);
 
         // Create a new course using the response JSON
         courseBuilder.newCourse(
@@ -126,23 +86,23 @@ public class API {
                     JSONObject instructorsObject = meeting.getJSONObject("instructors");
                     Iterator<String> instructors = instructorsObject.keys();
 
-                // Get first instructor
-                if (instructors.hasNext()) {
-                    JSONObject instructorObject = instructorsObject.getJSONObject(instructors.next());
-                    instructor = instructorObject.getString("firstName") +
-                            " " + instructorObject.getString("lastName");
+                    // Get first instructor
+                    if (instructors.hasNext()) {
+                        JSONObject instructorObject = instructorsObject.getJSONObject(instructors.next());
+                        instructor = instructorObject.getString("firstName") +
+                                " " + instructorObject.getString("lastName");
+                    }
                 }
-            }
 
-            // Create a new meeting object using the Meeting JSON
-            courseBuilder.newMeeting(
-                    meeting.getString("sectionNumber"),
-                    meeting.getString("teachingMethod"),
-                    instructor,
-                    meeting.getInt("enrollmentCapacity"),
-                    meeting.getInt("actualEnrolment"),
-                    meeting.getInt("actualWaitlist")
-            );
+                // Create a new meeting object using the Meeting JSON
+                courseBuilder.newMeeting(
+                        meeting.getString("sectionNumber"),
+                        meeting.getString("teachingMethod"),
+                        instructor,
+                        meeting.getInt("enrollmentCapacity"),
+                        meeting.getInt("actualEnrolment"),
+                        meeting.getInt("actualWaitlist")
+                );
 
                 // Retrieve the sessions withing the meeting and iterate over the keys
                 JSONObject sessionsObject = meeting.getJSONObject("schedule");
@@ -173,18 +133,20 @@ public class API {
         return courseBuilder.build();
     }
 
-    /**
-     * Enum to store Semester and Semester Code
-     */
-    public enum Semester {
+    public enum StGArtSciSemester implements Semester{
         FALL("F"),
         SPRING("S"),
         YEAR("Y");
 
         private final String code;
 
-        Semester(String code) {
+        StGArtSciSemester(String code){
             this.code = code;
+        }
+
+        @Override
+        public boolean match(String code) {
+            return code.equals(this.code) || code.equals(YEAR.code);
         }
     }
 }

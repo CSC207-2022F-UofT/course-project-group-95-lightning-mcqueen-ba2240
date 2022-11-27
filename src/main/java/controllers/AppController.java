@@ -1,6 +1,7 @@
 package controllers;
 
-import gateways.API;
+import gateways.CourseAPI.CourseAPI;
+import gateways.CourseAPI.StGArtSciAPI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,21 +48,21 @@ public class AppController implements Initializable {
 
     }
 
-    private final API api = new API();
+    private final CourseAPI api = new StGArtSciAPI();
 
     private final String currentYear = String.valueOf(LocalDate.now().getYear());
 
-    private API.Semester selectedSemester;
+    private CourseAPI.Semester selectedSemester;
 
     private final ArrayList<String> courseList = new ArrayList<>();
 
     @FXML
     void semesterFieldSelected() {
         if (semesterField.getValue().equals("Fall")) {
-            selectedSemester = API.Semester.FALL;
+            selectedSemester = StGArtSciAPI.StGArtSciSemester.FALL;
         }
         if (semesterField.getValue().equals("Spring")) {
-            selectedSemester = API.Semester.SPRING;
+            selectedSemester = StGArtSciAPI.StGArtSciSemester.SPRING;
         }
     }
 
@@ -76,7 +77,7 @@ public class AppController implements Initializable {
                 searchField.setEditable(false);
                 HashMap<String, String> courses;
                 try {
-                    courses = api.getSimpleCourses(yearField.getText(), selectedSemester, searchField.getText());
+                    courses = api.getNames(yearField.getText(), selectedSemester, searchField.getText());
                 } catch (IOException e) {
                     searchField.setEditable(true);
                     throw new RuntimeException(e);
