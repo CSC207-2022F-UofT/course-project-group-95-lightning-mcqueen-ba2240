@@ -2,8 +2,8 @@ package gateways;
 
 import entities.Course;
 import entities.Meeting;
-import gateways.CourseAPI.CourseAPI;
-import gateways.CourseAPI.StGArtSciAPI;
+import gateways.course_api.CourseAPI;
+import gateways.course_api.StGArtSciAPI;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

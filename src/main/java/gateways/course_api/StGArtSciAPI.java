@@ -1,4 +1,4 @@
-package gateways.CourseAPI;
+package gateways.course_api;
 
 import entities.Course;
 import org.json.JSONObject;

@@ -1,7 +1,7 @@
 package controllers;
 
-import gateways.CourseAPI.CourseAPI;
-import gateways.CourseAPI.StGArtSciAPI;
+import gateways.course_api.CourseAPI;
+import gateways.course_api.StGArtSciAPI;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
