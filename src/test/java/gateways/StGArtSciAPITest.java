@@ -47,7 +47,7 @@ public class StGArtSciAPITest {
 
         Meeting csc207Meeting = csc207.getMeetings().get(5);
 
-        Assertions.assertEquals(csc207Meeting.getSection(), "0101");
+        Assertions.assertEquals(csc207Meeting.getSection(), "CSC207H1 LEC0101");
         Assertions.assertEquals(csc207Meeting.getType(), StGArtSciMeeting.StGArtSciType.LEC);
         Assertions.assertEquals(csc207Meeting.getInstructor(), "P Gries");
     }
