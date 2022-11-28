@@ -14,7 +14,7 @@ import java.util.*;
 public class TimetableReaderWriter {
 
     // Creates an instance of type ObjectMapper and stored in variable JsonSave in order to use the functionality
-    // of Jackson, to write and read Json
+    // of Jackson, to write and read JSON
     private static final ObjectMapper JsonSave = new ObjectMapper();
     private static String filePath = "./data.json";
 
