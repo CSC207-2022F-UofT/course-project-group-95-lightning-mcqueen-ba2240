@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.io.IOException;
@@ -34,6 +35,9 @@ public class AppController implements Initializable {
     private TextField searchField;
 
     @FXML
+    private Text courseListLabel;
+
+    @FXML
     private ComboBox<String> semesterField;
 
     @FXML
@@ -54,6 +58,39 @@ public class AppController implements Initializable {
     private API.Semester selectedSemester;
 
     private final ArrayList<String> courseList = new ArrayList<>();
+
+
+
+
+    // add course into courseList and input the new addition to be updated in the UI.
+    @FXML
+    void addCourse(ActionEvent event) {
+        String course = searchField.getText();
+        courseList.add(course);
+        updateCourseListLabel();
+        searchField.setText("");
+    }
+
+    @FXML
+    void deleteCourse(ActionEvent event) {
+        if (courseList.size()>0) {
+            courseList.remove(courseList.size() - 1);
+            updateCourseListLabel();
+        }
+        else  {
+            callError("Insufficient number of courses.", "No courses have been added.");
+        }
+    }
+
+
+    // displays the user's selected courses in a label
+    void updateCourseListLabel() {
+        StringBuilder courseField = new StringBuilder("Added Courses:");
+        for (String course: courseList) {
+            courseField.append(" ").append(course).append(",");
+        }
+        courseListLabel.setText(courseField.toString());
+    }
 
     @FXML
     void semesterFieldSelected() {
