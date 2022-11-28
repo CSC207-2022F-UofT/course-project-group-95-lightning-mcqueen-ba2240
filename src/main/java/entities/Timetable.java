@@ -1,5 +1,7 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,8 +14,8 @@ import java.util.List;
 
 public class Timetable {
 
-    private final List<Meeting> meetings;
-    private final HashSet<String> tags;
+    private List<Meeting> meetings;
+    private HashSet<String> tags;
 
     public Timetable(){}
     
@@ -67,7 +69,8 @@ public class Timetable {
         Timetable timetable = (Timetable) o;
         return Objects.equals(meetings, timetable.meetings) && Objects.equals(tags, timetable.tags);
     }
-    
+
+    @JsonIgnore
     public List<Session> getSortedSessions() {
         List<Session> sessions = new ArrayList<>();
         for (Meeting meeting: this.meetings){
