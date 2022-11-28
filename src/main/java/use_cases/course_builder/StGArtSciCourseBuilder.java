@@ -41,7 +41,9 @@ public class StGArtSciCourseBuilder implements CourseBuilder{
      */
     public void newMeeting(String section, String type, String instructor,
                            int capacity, int enrollment, int waitlist) {
-        this.meeting = new StGArtSciMeeting(section, StGArtSciMeeting.StGArtSciType.parse(type),
+        this.meeting = new StGArtSciMeeting(
+                course.getCode() + " " + type + section,
+                StGArtSciMeeting.StGArtSciType.parse(type),
                 instructor, capacity, enrollment, waitlist);
     }
 
