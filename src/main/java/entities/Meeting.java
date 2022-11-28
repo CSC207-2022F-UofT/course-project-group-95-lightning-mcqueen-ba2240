@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.*;
 
 /**
  * This dataclass stores the information for a given meeting.
@@ -220,6 +221,18 @@ public class Meeting {
     @Override
     public int hashCode() {
         return Objects.hash(section, type, sessions, instructor, capacity, enrollment, waitlist, rateMyProf);
+    }
+
+    /**
+     * Returns a Set containing the time signature of all Sessions in the Meeting
+     * @return Set of the Session's time signatures
+     */
+    public Set<String> timeHash(){
+        Set<String> hash = new HashSet<>();
+        for (Session session: sessions){
+            hash.add(session.timeHash());
+        }
+        return hash;
     }
 
     /**
