@@ -15,20 +15,13 @@ import java.time.LocalTime;
  * described below as Strings
  */
 public class Tagger {
-    public static HashSet<String> main(Timetable timetable) {
-        HashSet<String> tags = new HashSet<>();
+    public static Set<String> main(Timetable timetable) {
+        Set<String> tags = new HashSet<>();
         List<Session> timetableSessions = timetable.getSortedSessions();
 
-        // Initial variables required for the Has Weekend tag
-        HashMap<String, Boolean> has_days = new HashMap<>();
-        has_days.put("has_monday", false);
-        has_days.put("has_friday", false);
+        Map<String, Boolean> has_days = createHasWeekendMap();
 
-        // Initial variables required for the Morning/Afternoon/Evening Heavy tag
-        HashMap<String, Integer> timesOfDay = new HashMap<>();
-        timesOfDay.put("Morning", 0);
-        timesOfDay.put("Afternoon", 0);
-        timesOfDay.put("Evening", 0);
+        Map<String, Integer> timesOfDay = createTimeOfDayMap();
 
         // Initial variables required for the Density Tag
         Session lastSession = null;
@@ -45,12 +38,27 @@ public class Tagger {
             updateMondayFriday(session, has_days);
         }
 
+        addTimeOfDayTag(tags, timetableSessions, timesOfDay);
+
+        addLongWeekendTag(tags, has_days);
+
+        return tags;
+    }
+
+    private static void addLongWeekendTag(Set<String> tags, Map<String, Boolean> has_days) {
+        // Check for long weekend
+        if (!(has_days.get("has_monday") && has_days.get("has_friday"))) {
+            tags.add("Long Weekend");
+        }
+    }
+
+    private static void addTimeOfDayTag(Set<String> tags, List<Session> timetableSessions, Map<String, Integer> timesOfDay) {
         // Check for morning/afternoon/evening heavy
         Integer majority = timetableSessions.size() / 2;
         boolean added = false;
         for (String key : timesOfDay.keySet()) {
             if (timesOfDay.get(key) > majority) {
-                // if majority of classes are in one block, then it is heavy in that block
+                // if the majority of classes are in one block, then it is heavy in that block
                 tags.add(key + "-heavy");
                 added = true;
             }
@@ -59,13 +67,23 @@ public class Tagger {
             // if no 'heavy' tags are added, then classify the timetable as balanced
             tags.add("Balanced");
         }
+    }
 
-        // Check for long weekend
-        if (!(has_days.get("has_monday") && has_days.get("has_friday"))) {
-            tags.add("Long Weekend");
-        }
+    private static Map<String, Integer> createTimeOfDayMap() {
+        // Initial variables required for the Morning/Afternoon/Evening Heavy tag
+        Map<String, Integer> timesOfDay = new HashMap<>();
+        timesOfDay.put("Morning", 0);
+        timesOfDay.put("Afternoon", 0);
+        timesOfDay.put("Evening", 0);
+        return timesOfDay;
+    }
 
-        return tags;
+    private static Map<String, Boolean> createHasWeekendMap() {
+        // Initial variables required for the Has Weekend tag
+        Map<String, Boolean> has_days = new HashMap<>();
+        has_days.put("has_monday", false);
+        has_days.put("has_friday", false);
+        return has_days;
     }
 
     /**
@@ -108,7 +126,7 @@ public class Tagger {
      * @param consecutiveCount list with each index representing a day and the value at each index representing
      *                         the number of consecutive courses within that day
      */
-    private static void addDensityTag(HashSet<String> tags, List<Integer> consecutiveCount) {
+    private static void addDensityTag(Set<String> tags, List<Integer> consecutiveCount) {
         int numberOfConsecutiveDays = 0;
         for (int count : consecutiveCount) {
             if (count >= 3) {
@@ -126,7 +144,7 @@ public class Tagger {
      * @param session  one of the sessions of the timetable
      * @param has_days HashMap that stores whether the timetable has a Monday or Friday class
      */
-    private static void updateMondayFriday(Session session, HashMap<String, Boolean> has_days) {
+    private static void updateMondayFriday(Session session, Map<String, Boolean> has_days) {
         if (session.getMeetingDay().equals(DayOfWeek.MONDAY)) {
             has_days.put("has_monday", true);
         }
@@ -142,7 +160,7 @@ public class Tagger {
      * @param session the current session
      * @param timesOfDay the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
      */
-    private static void timesOfDayHeavy(Session session, HashMap<String, Integer> timesOfDay) {
+    private static void timesOfDayHeavy(Session session, Map<String, Integer> timesOfDay) {
         LocalTime start = session.getMeetingStartTime();
 
         LocalTime morningStart = LocalTime.of(8, 0);
