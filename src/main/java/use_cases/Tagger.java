@@ -15,13 +15,13 @@ import java.time.LocalTime;
  * described below as Strings
  */
 public class Tagger {
-    public static Set<String> main(Timetable timetable) {
+    public static Set<String> addTags(Timetable timetable) {
         Set<String> tags = new HashSet<>();
         List<Session> timetableSessions = timetable.getSortedSessions();
 
-        Map<String, Boolean> has_days = createHasWeekendMap();
+        Map<String, Boolean> hasDaysMap = createHasDaysMap();
 
-        Map<String, Integer> timesOfDay = createTimeOfDayMap();
+        Map<String, Integer> timesOfDayMap = createTimesOfDayMap();
 
         // Initial variables required for the Density Tag
         Session lastSession = null;
@@ -33,31 +33,42 @@ public class Tagger {
             addDensityTag(tags, consecutiveCount);
             lastSession = session;
 
-            timesOfDayHeavy(session, timesOfDay);
+            timesOfDayHeavy(session, timesOfDayMap);
 
-            updateMondayFriday(session, has_days);
+            updateMondayFriday(session, hasDaysMap);
         }
 
-        addTimeOfDayTag(tags, timetableSessions, timesOfDay);
+        addTimeOfDayTag(tags, timetableSessions, timesOfDayMap);
 
-        addLongWeekendTag(tags, has_days);
+        addLongWeekendTag(tags, hasDaysMap);
 
         return tags;
     }
 
-    private static void addLongWeekendTag(Set<String> tags, Map<String, Boolean> has_days) {
+    /**
+     * Helper function for Tagger's main method that adds the Long Weekend tag if the timetable has a 3-day weekend
+     * @param tags the set of tags in which the tag will be added
+     * @param hasDaysMap the mapping from Monday, Friday to boolean values if the timetable contains a meeting on the day
+     */
+    private static void addLongWeekendTag(Set<String> tags, Map<String, Boolean> hasDaysMap) {
         // Check for long weekend
-        if (!(has_days.get("has_monday") && has_days.get("has_friday"))) {
+        if (!(hasDaysMap.get("hasMonday") && hasDaysMap.get("hasFriday"))) {
             tags.add("Long Weekend");
         }
     }
 
-    private static void addTimeOfDayTag(Set<String> tags, List<Session> timetableSessions, Map<String, Integer> timesOfDay) {
+    /**
+     * Helper function for Tagger's main method that adds which time of day the timetable has most meetings
+     * @param tags the set of tags in which the tag will be added
+     * @param timetableSessions the sessions of the given timetable
+     * @param timesOfDayMap mapping counting how many meetings appear in each specified time of day (Morning/Afternoon/Evening)
+     */
+    private static void addTimeOfDayTag(Set<String> tags, List<Session> timetableSessions, Map<String, Integer> timesOfDayMap) {
         // Check for morning/afternoon/evening heavy
         Integer majority = timetableSessions.size() / 2;
         boolean added = false;
-        for (String key : timesOfDay.keySet()) {
-            if (timesOfDay.get(key) > majority) {
+        for (String key : timesOfDayMap.keySet()) {
+            if (timesOfDayMap.get(key) > majority) {
                 // if the majority of classes are in one block, then it is heavy in that block
                 tags.add(key + "-heavy");
                 added = true;
@@ -69,21 +80,29 @@ public class Tagger {
         }
     }
 
-    private static Map<String, Integer> createTimeOfDayMap() {
+    /**
+     * Helper function for initializing a Map for the timesOfDay tag
+     * @return a Map from the time of time to how many meetings in the timetable occur in the time
+     */
+    private static Map<String, Integer> createTimesOfDayMap() {
         // Initial variables required for the Morning/Afternoon/Evening Heavy tag
-        Map<String, Integer> timesOfDay = new HashMap<>();
-        timesOfDay.put("Morning", 0);
-        timesOfDay.put("Afternoon", 0);
-        timesOfDay.put("Evening", 0);
-        return timesOfDay;
+        Map<String, Integer> timesOfDayMap = new HashMap<>();
+        timesOfDayMap.put("Morning", 0);
+        timesOfDayMap.put("Afternoon", 0);
+        timesOfDayMap.put("Evening", 0);
+        return timesOfDayMap;
     }
 
-    private static Map<String, Boolean> createHasWeekendMap() {
+    /**
+     * Helper function for initializing a Map for the long weekend tag
+     * @return a Map from the day as a key (Monday/Friday) to a boolean on whether the day occurs in the timetable
+     */
+    private static Map<String, Boolean> createHasDaysMap() {
         // Initial variables required for the Has Weekend tag
-        Map<String, Boolean> has_days = new HashMap<>();
-        has_days.put("has_monday", false);
-        has_days.put("has_friday", false);
-        return has_days;
+        Map<String, Boolean> hasDaysMap = new HashMap<>();
+        hasDaysMap.put("hasMonday", false);
+        hasDaysMap.put("hasFriday", false);
+        return hasDaysMap;
     }
 
     /**
@@ -142,25 +161,25 @@ public class Tagger {
      * Update whether the timetable has at least one Monday or Friday class
      *
      * @param session  one of the sessions of the timetable
-     * @param has_days HashMap that stores whether the timetable has a Monday or Friday class
+     * @param hasDaysMap HashMap that stores whether the timetable has a Monday or Friday class
      */
-    private static void updateMondayFriday(Session session, Map<String, Boolean> has_days) {
+    private static void updateMondayFriday(Session session, Map<String, Boolean> hasDaysMap) {
         if (session.getMeetingDay().equals(DayOfWeek.MONDAY)) {
-            has_days.put("has_monday", true);
+            hasDaysMap.put("hasMonday", true);
         }
         if (session.getMeetingDay().equals(DayOfWeek.FRIDAY)) {
-            has_days.put("has_friday", true);
+            hasDaysMap.put("hasFriday", true);
         }
     }
 
     /**
-     * Increment the counts of morning, afternoon, or evening in timesOfDay according to
+     * Increment the counts of morning, afternoon, or evening in timesOfDayMap according to
      * when the start time of the given session is
      *
      * @param session the current session
-     * @param timesOfDay the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
+     * @param timesOfDayMap the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
      */
-    private static void timesOfDayHeavy(Session session, Map<String, Integer> timesOfDay) {
+    private static void timesOfDayHeavy(Session session, Map<String, Integer> timesOfDayMap) {
         LocalTime start = session.getMeetingStartTime();
 
         LocalTime morningStart = LocalTime.of(8, 0);
@@ -173,11 +192,11 @@ public class Tagger {
         LocalTime eveningEnd = LocalTime.of(21, 0);
 
         if ((start.isAfter(morningStart) || start.equals(morningStart)) && start.isBefore(morningEnd)) {
-            timesOfDay.put("Morning", timesOfDay.get("Morning") + 1);
+            timesOfDayMap.put("Morning", timesOfDayMap.get("Morning") + 1);
         } else if ((start.isAfter(afternoonStart) || start.equals(afternoonStart)) && start.isBefore(afternoonEnd)) {
-            timesOfDay.put("Afternoon", timesOfDay.get("Afternoon") + 1);
+            timesOfDayMap.put("Afternoon", timesOfDayMap.get("Afternoon") + 1);
         } else if ((start.isAfter(eveningStart) || start.equals(eveningStart))) {
-            timesOfDay.put("Evening", timesOfDay.get("Evening") + 1);
+            timesOfDayMap.put("Evening", timesOfDayMap.get("Evening") + 1);
         }
     }
 }
