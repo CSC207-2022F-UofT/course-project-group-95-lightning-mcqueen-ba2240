@@ -1,4 +1,4 @@
-package entities;
+package entities.base;
 
 import java.util.*;
 
@@ -7,7 +7,7 @@ import java.util.*;
  *
  */
 public class Meeting {
-    private final String section;
+    private String section;
     private final Type type;
     private final List<Session> sessions;
     private final String instructor;
@@ -18,8 +18,8 @@ public class Meeting {
 
     /**
      * Construct a Meeting, setting the section, meeting type, duration, sessions, instructor, rateMyProf score.
-     * @param section the section of the meeting (LEC"0101", TUT"5101")
-     * @param type the type of the meeting (Lecture, Tutorial, Practical)
+     * @param section the section of the meeting
+     * @param type the type of the meeting
      * @param instructor the professor/student who is instructing the entities.Meeting
      * @param capacity the number of students that can enroll in the course
      * @param enrollment the number of students that have enrolled in the course
@@ -57,6 +57,14 @@ public class Meeting {
     }
 
     /**
+     * A getter for the entities.Meeting's section
+     * @param section the new section as String
+     */
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    /**
      * A getter for the entities.Meeting's type.
      * @return the entities.Meeting's type as a String
      */
@@ -64,13 +72,6 @@ public class Meeting {
         return this.type;
     }
 
-    /**
-     * A getter for the entities.Meeting's code e.g. LEC0101
-     * @return the entities.Meeting's code as a String
-     */
-    public String getCode() {
-        return this.type.toString() + this.section;
-    }
 
     /**
      * A getter for the entities.Meeting's sessions.
@@ -171,12 +172,12 @@ public class Meeting {
         return hash;
     }
 
+    public interface Type{}
+
     /**
      * Enum for Meeting Type
      */
-    public enum Type {
-        LEC,
-        TUT,
-        PRA
+    public enum DefaultType implements Type{
+        DEFAULT;
     }
 }

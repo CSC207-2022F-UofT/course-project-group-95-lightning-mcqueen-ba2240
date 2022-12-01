@@ -1,7 +1,7 @@
 package use_cases;
 
-import entities.Meeting;
-import entities.Session;
+import entities.base.Meeting;
+import entities.base.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -19,11 +19,11 @@ public class TimetableValidatorTest {
      */
     @Test
     public void testValidateMeetingsTimeOverlap() {
-        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0), "BA2165");
-        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(4, 0), LocalTime.of(6,0), "BA2165");
+        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
+        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(4, 0), LocalTime.of(6,0));
 
-        Meeting meeting1 = new Meeting("0101", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session1);
-        Meeting meeting2 = new Meeting("0201", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session2);
+        Meeting meeting1 = new Meeting("0101", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session1);
+        Meeting meeting2 = new Meeting("0201", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session2);
         List<Meeting> meetings = new ArrayList<>();
         meetings.add(meeting1);
         meetings.add(meeting2);
@@ -39,11 +39,11 @@ public class TimetableValidatorTest {
      */
     @Test
     public void testValidateMeetingsNoDayOverlap() {
-        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0), "BA2165");
-        Session session2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(4, 0), LocalTime.of(6,0), "BA2165");
+        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
+        Session session2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(4, 0), LocalTime.of(6,0));
 
-        Meeting meeting1 = new Meeting("0101", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session1);
-        Meeting meeting2 = new Meeting("0201", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session2);
+        Meeting meeting1 = new Meeting("0101", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session1);
+        Meeting meeting2 = new Meeting("0201", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session2);
         List<Meeting> meetings = new ArrayList<>();
         meetings.add(meeting1);
         meetings.add(meeting2);
@@ -58,11 +58,11 @@ public class TimetableValidatorTest {
      */
     @Test
     public void testValidateMeetingsNoTimeOverlap() {
-        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0), "BA2165");
-        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0), "BA2165");
+        Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
+        Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0));
 
-        Meeting meeting1 = new Meeting("0101", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session1);
-        Meeting meeting2 = new Meeting("0201", Meeting.Type.LEC, "L McQueen", 100, 70, 0, session2);
+        Meeting meeting1 = new Meeting("0101", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session1);
+        Meeting meeting2 = new Meeting("0201", Meeting.DefaultType.DEFAULT, "L McQueen", 100, 70, 0, session2);
         List<Meeting> meetings = new ArrayList<>();
         meetings.add(meeting1);
         meetings.add(meeting2);

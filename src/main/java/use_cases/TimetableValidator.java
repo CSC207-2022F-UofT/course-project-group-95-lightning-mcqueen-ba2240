@@ -1,7 +1,7 @@
 package use_cases;
 
-import entities.Meeting;
-import entities.Session;
+import entities.base.Meeting;
+import entities.base.Session;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
@@ -16,12 +16,12 @@ public class TimetableValidator {
      * @return true if the sessions overlap with each other, otherwise false
      */
     private static boolean sessionOverlap(Session session1, Session session2){
-        LocalTime s1start = session1.getMeetingStartTime().plusMinutes(10);
-        LocalTime s2start = session2.getMeetingStartTime().plusMinutes(10);
-        LocalTime s1end = session1.getMeetingEndTime();
-        LocalTime s2end = session2.getMeetingEndTime();
-        DayOfWeek s1day = session1.getMeetingDay();
-        DayOfWeek s2day = session2.getMeetingDay();
+        LocalTime s1start = session1.getStartTime().plusMinutes(10);
+        LocalTime s2start = session2.getStartTime().plusMinutes(10);
+        LocalTime s1end = session1.getEndTime();
+        LocalTime s2end = session2.getEndTime();
+        DayOfWeek s1day = session1.getDay();
+        DayOfWeek s2day = session2.getDay();
 
         return s1day.equals(s2day) && s1start.isBefore(s2end) && s1end.isAfter(s2start);
     }
