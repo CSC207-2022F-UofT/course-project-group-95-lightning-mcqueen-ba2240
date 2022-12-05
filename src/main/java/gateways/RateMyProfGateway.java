@@ -105,7 +105,7 @@ public class RateMyProfGateway implements RateMyProfGatewayAccessInterface {
                 String score = (String) professor.get("overall_rating");
                 String department = (String) professor.get("tDept");
                 if (!score.equals("N/A")) {
-                    professors.put(first_name + " " + last_name + ", " + department, Double.parseDouble(score));
+                    professors.put(first_name.charAt(0) + " " + last_name, Double.parseDouble(score));
                 }
             }
         }
