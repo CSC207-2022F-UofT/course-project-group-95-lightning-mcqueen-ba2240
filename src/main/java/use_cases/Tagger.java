@@ -50,7 +50,7 @@ public class Tagger {
         boolean added = false;
         for (String key : timesOfDay.keySet()) {
             if (timesOfDay.get(key) > majority) {
-                // if majority of classes are in one block, then it is heavy in that block
+                // if the majority of classes are in one block, then it is heavy in that block
                 tags.add(key + "-heavy");
                 added = true;
             }

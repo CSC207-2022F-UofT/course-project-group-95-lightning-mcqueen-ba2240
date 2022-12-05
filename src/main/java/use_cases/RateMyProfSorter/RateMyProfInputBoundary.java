@@ -1,4 +1,5 @@
 package use_cases.RateMyProfSorter;
 
-public class RateMyProfInputBoundary {
+public interface RateMyProfInputBoundary {
+    RateMyProfResponseModel sort(RateMyProfRequestModel requestModel);
 }

@@ -25,7 +25,7 @@ public class RateMyProfGateway implements RateMyProfGatewayAccessInterface {
      * in a private instance attribute
      * @throws IOException if the HTTP request fails
      */
-    RateMyProfGateway() throws IOException {
+    public RateMyProfGateway() throws IOException {
         int numberPages = getNumberPages();
         this.professorMapping = getProfessors(numberPages);
     }
