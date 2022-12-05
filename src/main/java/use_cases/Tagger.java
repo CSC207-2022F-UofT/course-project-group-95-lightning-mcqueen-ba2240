@@ -164,10 +164,10 @@ public class Tagger {
      * @param hasDaysMap HashMap that stores whether the timetable has a Monday or Friday class
      */
     private static void updateMondayFriday(Session session, Map<String, Boolean> hasDaysMap) {
-        if (session.getMeetingDay().equals(DayOfWeek.MONDAY)) {
+        if (session.getDay().equals(DayOfWeek.MONDAY)) {
             hasDaysMap.put("hasMonday", true);
         }
-        if (session.getMeetingDay().equals(DayOfWeek.FRIDAY)) {
+        if (session.getDay().equals(DayOfWeek.FRIDAY)) {
             hasDaysMap.put("hasFriday", true);
 
         }
@@ -182,7 +182,7 @@ public class Tagger {
      */
 
     private static void timesOfDayHeavy(Session session, Map<String, Integer> timesOfDayMap) {
-        LocalTime start = session.getMeetingStartTime();
+        LocalTime start = session.getStartTime();
 
 
         LocalTime morningStart = LocalTime.of(8, 0);
