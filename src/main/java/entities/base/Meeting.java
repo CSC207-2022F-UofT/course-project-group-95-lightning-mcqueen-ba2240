@@ -1,5 +1,12 @@
 package entities.base;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 import java.util.*;
 
 /**
@@ -8,13 +15,15 @@ import java.util.*;
  */
 public class Meeting {
     private String section;
-    private final Type type;
-    private final List<Session> sessions;
-    private final String instructor;
-    private final int capacity;
-    private final int enrollment;
-    private final int waitlist;
+    private Type type;
+    private List<Session> sessions;
+    private String instructor;
+    private int capacity;
+    private int enrollment;
+    private int waitlist;
     private Float rateMyProf;
+
+    public Meeting(){};
 
     /**
      * Construct a Meeting, setting the section, meeting type, duration, sessions, instructor, rateMyProf score.
@@ -120,6 +129,56 @@ public class Meeting {
     public int getWaitlist() {
         return waitlist;
     }
+
+
+    /**
+     * A setter for the entities.Meeting's type.
+     * @param type the entities.Meeting's type as a String
+     */
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    /**
+     * A setter for the entities.Meeting's sessions.
+     * @param sessions the entities.Meeting's sessions as a Session[]
+     */
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    /**
+     * A setter for the entities.Meeting's instructor.
+     * @param instructor the entities.Meeting's instructor as a String
+     */
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    /**
+     * A setter for the entities.Meeting's capacity.
+     * @param capacity  the entities.Meeting's capacity as an integer
+     */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    /**
+     * A setter for the entities.Meeting's enrollment.
+     * @param enrollment  the entities.Meeting's enrollment as an integer
+     */
+    public void setEnrollment(int enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    /**
+     * A getter for the entities.Meeting's waitlist.
+     * @param waitlist the entities.Meeting's waitlist as an integer
+     */
+    public void setWaitlist(int waitlist) {
+        this.waitlist = waitlist;
+    }
+
 
     /**
      * Add a new Session to the Meeting
