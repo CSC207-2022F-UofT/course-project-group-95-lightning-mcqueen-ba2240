@@ -1,8 +1,9 @@
-package use_cases;
+package use_cases.course_builder;
 
-import entities.Course;
-import entities.Meeting;
-import entities.Session;
+import entities.base.Course;
+import entities.base.Meeting;
+import entities.base.Session;
+import entities.stgartsci.StGArtSciMeeting;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * data provided by the API to make the entities required.
  * Caches RateMyProf scores to prevent repeated calls
  */
-public class CourseBuilder {
+public class StGArtSciCourseBuilder implements CourseBuilder{
     private Course course;
     private Meeting meeting;
     private Session session;
@@ -40,7 +41,10 @@ public class CourseBuilder {
      */
     public void newMeeting(String section, String type, String instructor,
                            int capacity, int enrollment, int waitlist) {
-        this.meeting = new Meeting(section, Meeting.Type.valueOf(type), instructor, capacity, enrollment, waitlist);
+        this.meeting = new StGArtSciMeeting(
+                course.getCode() + " " + type + section,
+                StGArtSciMeeting.StGArtSciType.parse(type),
+                instructor, capacity, enrollment, waitlist);
     }
 
     /**
@@ -55,12 +59,11 @@ public class CourseBuilder {
      * @param meetingDay the day the session is taking place MONDAY, TUESDAY, ...
      * @param meetingStartTime the start time of the meeting in 24H format ('12:00', '17:30')
      * @param meetingEndTime the end time of the meeting in 24H format ('12:00', '17:30')
-     * @param meetingRoom the UofT room code of the session (BA2240)
      */
     public void newSession(String meetingDay, String meetingStartTime,
-                           String meetingEndTime, String meetingRoom, boolean rmp) {
+                           String meetingEndTime, boolean rmp) {
         this.session = new Session(parseDayOfWeek(meetingDay), LocalTime.parse(meetingStartTime),
-                LocalTime.parse(meetingEndTime), meetingRoom);
+                LocalTime.parse(meetingEndTime));
         if (rmp) {
             checkRMP();
         }
@@ -69,7 +72,7 @@ public class CourseBuilder {
     /**
      * Check the RateMyProfessor in cache or API, save if not in cache
      */
-    public void checkRMP() {
+    private void checkRMP() {
         String instructor = meeting.getInstructor();
         if (!instructor.isEmpty()){
             if (rmpCache.containsKey(instructor)){
@@ -80,6 +83,9 @@ public class CourseBuilder {
         }
     }
 
+    /**
+     * Push the Session object from the cache onto the Meeting
+     */
     public void pushSession() {
         meeting.addSessions(session);
     }

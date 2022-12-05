@@ -1,5 +1,6 @@
 package entities;
 
+import entities.base.Session;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,7 +13,7 @@ public class SessionTest {
         Session session = new Session(
                 DayOfWeek.MONDAY,
                 LocalTime.parse("12:20"),
-                LocalTime.parse("14:40"), ""
+                LocalTime.parse("14:40")
         );
 
         String expected = "MONDAY12:2014:40";
@@ -26,7 +27,7 @@ public class SessionTest {
         Session session = new Session(
                 DayOfWeek.FRIDAY,
                 LocalTime.parse("16:10"),
-                LocalTime.parse("20:35"), ""
+                LocalTime.parse("20:35")
         );
 
         String expected = "FRIDAY16:1020:35";

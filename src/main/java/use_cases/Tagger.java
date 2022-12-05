@@ -1,7 +1,7 @@
 package use_cases;
 
-import entities.Session;
-import entities.Timetable;
+import entities.base.Session;
+import entities.base.Timetable;
 
 import java.time.DayOfWeek;
 import java.util.*;
@@ -114,9 +114,9 @@ public class Tagger {
      * @return True if the two sessions are consecutive, False if not
      */
     private static Boolean consecutiveSessions(Session session1, Session session2) {
-        if ((session1 != null) && (session1.getMeetingDay() == session2.getMeetingDay())) {
-            return (session1.getMeetingEndTime().equals(session2.getMeetingStartTime())) ||
-                    (session2.getMeetingEndTime().equals(session1.getMeetingStartTime()));
+        if ((session1 != null) && (session1.getDay() == session2.getDay())) {
+            return (session1.getEndTime().equals(session2.getStartTime())) ||
+                    (session2.getEndTime().equals(session1.getStartTime()));
         }
         return false;
     }
@@ -132,7 +132,7 @@ public class Tagger {
      */
     private static void checkDensity(Session currentSession, Session lastSession, List<Integer> consecutiveCount) {
         if (consecutiveSessions(lastSession, currentSession)) {
-            int index = currentSession.getMeetingDay().getValue();
+            int index = currentSession.getDay().getValue();
             consecutiveCount.set(index, consecutiveCount.get(index) + 1);
         }
     }
@@ -169,6 +169,7 @@ public class Tagger {
         }
         if (session.getMeetingDay().equals(DayOfWeek.FRIDAY)) {
             hasDaysMap.put("hasFriday", true);
+
         }
     }
 
@@ -179,8 +180,10 @@ public class Tagger {
      * @param session the current session
      * @param timesOfDayMap the hashmap containing the key-value pairs of morning, afternoon, evening and their counts
      */
+
     private static void timesOfDayHeavy(Session session, Map<String, Integer> timesOfDayMap) {
         LocalTime start = session.getMeetingStartTime();
+
 
         LocalTime morningStart = LocalTime.of(8, 0);
         LocalTime morningEnd = LocalTime.of(13, 0);
