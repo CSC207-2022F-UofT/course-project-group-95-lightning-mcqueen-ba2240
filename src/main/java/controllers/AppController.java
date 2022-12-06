@@ -1,17 +1,23 @@
 package controllers;
 
-import entities.base.Timetable;
+// UI Components
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.TextFields;
+
+// Presenter
 import presenters.ErrorWindow;
+
+// Use Case
 import use_cases.auto_complete.AutoCompleteInputBoundary;
 import use_cases.auto_complete.AutoCompleteInteractor;
 import use_cases.auto_complete.AutoCompleteRequestModel;
@@ -29,10 +35,10 @@ import use_cases.timetable_view.TimetableViewInteractor;
 import use_cases.timetable_view.TimetableViewRequestModel;
 import use_cases.timetable_view.TimetableViewResponseModel;
 
+// Util
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -40,6 +46,9 @@ import java.util.ResourceBundle;
  */
 
 public class AppController implements Initializable {
+
+    @FXML
+    private Button generateButton;
 
     @FXML
     private TextField searchField;
@@ -68,14 +77,17 @@ public class AppController implements Initializable {
     @FXML
     private HBox timetableBox;
 
+    @FXML
+    private ProgressIndicator spinner;
+
     private final AutoCompleteInputBoundary autoCompleteInputBoundary = new AutoCompleteInteractor();
     private final TimetableGenerationInputBoundary timetableGenerationInputBoundary = new
             TimetableGenerationInteractor();
     private final TimetableViewInputBoundary timetableViewInputBoundary = new TimetableViewInteractor();
 
     private final ArrayList<String> courseList = new ArrayList<>();
-    private List<Timetable> timetableList = new ArrayList<>();
-    private List<Timetable> filteredTimetableList = new ArrayList<>();
+    private TimetableGenerationResponseModel timetableList;
+    private FilterResponseModel filteredTimetableList;
     private int currentTimetableIndex = 0;
 
     /**
@@ -102,21 +114,27 @@ public class AppController implements Initializable {
 
     @FXML
     void generateCourses() {
+        generateButton.setDisable(true);
+
         TimetableGenerationRequestModel request = new TimetableGenerationRequestModel(courseList);
-        TimetableGenerationResponseModel response = timetableGenerationInputBoundary.generate(request);
-        timetableList = response.getTimetableList();
-        filteredTimetableList = timetableList;
-        timetableCountLabel.setText("of " + timetableList.size());
+        timetableList = timetableGenerationInputBoundary.generate(request);
+        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
+        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
+
         viewTimetable();
+
+        generateButton.setDisable(false);
     }
 
     @FXML
     void nextTimetableAction() {
-        if (currentTimetableIndex + 1 < filteredTimetableList.size()){
-            currentTimetableIndex++;
-            viewTimetable();
-        }else {
-            ErrorWindow.callError("Last Timetable", "This is the last timetable!");
+        if (filteredTimetableList != null){
+            if (currentTimetableIndex + 1 < filteredTimetableList.getTimetables().size()){
+                currentTimetableIndex++;
+                viewTimetable();
+            }else {
+                ErrorWindow.callError("Last Timetable", "This is the last timetable!");
+            }
         }
     }
 
@@ -133,11 +151,10 @@ public class AppController implements Initializable {
     @FXML
     void filterAction() {
         FilterInputBoundary filterInputBoundary = new FilterInteractor();
-        FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList);
-        FilterResponseModel response = filterInputBoundary.filter(request);
-        filteredTimetableList = response.getTimetables();
-        if (!filteredTimetableList.isEmpty()){
-            timetableCountLabel.setText("of " + filteredTimetableList.size());
+        FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList.getTimetableList());
+        filteredTimetableList = filterInputBoundary.filter(request);
+        if (!filteredTimetableList.getTimetables().isEmpty()){
+            timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
             currentTimetableIndex = 0;
             viewTimetable();
         }else {
@@ -149,7 +166,7 @@ public class AppController implements Initializable {
     @FXML
     void clearFilterAction() {
         tagField.setText("");
-        filteredTimetableList = timetableList;
+        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
         currentTimetableIndex = 0;
         viewTimetable();
     }
@@ -162,6 +179,7 @@ public class AppController implements Initializable {
     @FXML
     void searchFieldTyped() {
         new Thread(() -> {
+            spinner.setVisible(true);
             // Takes first 3 words from user input and uses that as org for the getSimpleCourses function.
             // Gets the keys from getSimpleCourses output and uses them as autocomplete suggestions.
             searchField.setEditable(false);
@@ -170,6 +188,7 @@ public class AppController implements Initializable {
             AutoCompleteResponseModel response = autoCompleteInputBoundary.search(request);
             TextFields.bindAutoCompletion(searchField, response.getCourses());
             searchField.setEditable(true);
+            spinner.setVisible(false);
         }).start();
     }
 
@@ -177,8 +196,8 @@ public class AppController implements Initializable {
      * Update the TimetableHbox and other related components on change in currentTimetableIndex
      */
     void viewTimetable() {
-        Timetable timetable = filteredTimetableList.get(currentTimetableIndex);
-        TimetableViewRequestModel request = new TimetableViewRequestModel(timetable);
+        TimetableViewRequestModel request = new TimetableViewRequestModel(filteredTimetableList.getTimetables(),
+                currentTimetableIndex);
         TimetableViewResponseModel response = timetableViewInputBoundary.getView(request);
 
         ObservableList<Node> children = timetableBox.getChildren();
@@ -186,8 +205,7 @@ public class AppController implements Initializable {
         children.add(response.getNode());
         HBox.setHgrow(response.getNode(), Priority.ALWAYS);
 
-        String tags = String.join(", ", timetable.getTags());
-        tagsLabel.setText("Tags: " + tags);
+        tagsLabel.setText("Tags: " + response.getTags());
 
         selectedTimetableField.setText(String.valueOf(currentTimetableIndex + 1));
     }

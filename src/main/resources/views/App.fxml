@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,34 +17,38 @@
    <children>
       <VBox layoutX="110.0" layoutY="50.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="37.0" prefWidth="782.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="782.0">
                <children>
                   <TextField fx:id="yearField" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="108.0" promptText="Year">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
                   <ComboBox fx:id="semesterField" prefHeight="26.0" prefWidth="106.0" promptText="Semester">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <TextField fx:id="searchField" onKeyTyped="#searchFieldTyped" prefHeight="26.0" prefWidth="406.0" promptText="Course e.g. CSC207" HBox.hgrow="ALWAYS">
+                  <TextField fx:id="searchField" onAction="#addCourse" onKeyTyped="#searchFieldTyped" prefHeight="26.0" prefWidth="406.0" promptText="Course e.g. CSC207" HBox.hgrow="ALWAYS">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
                   <Button minWidth="27.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="29.0" prefWidth="27.0" text="+">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button defaultButton="true" mnemonicParsing="false" onAction="#generateCourses" text="Generate">
+                  <ProgressIndicator fx:id="spinner" prefHeight="38.0" prefWidth="21.0" visible="false" />
+                  <Button fx:id="generateButton" defaultButton="true" mnemonicParsing="false" onAction="#generateCourses" prefHeight="26.0" prefWidth="90.0" text="Generate">
                      <HBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </HBox.margin>
                   </Button>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
             <HBox prefHeight="30.0" prefWidth="782.0">
                <children>
@@ -59,7 +64,7 @@
                         </Text>
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" onAction="#deleteCourse" text="Delete Course">
+                  <Button mnemonicParsing="false" onAction="#deleteCourse" prefWidth="90.0" text="Delete Course">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>
@@ -96,17 +101,17 @@
                            <children>
                               <Button mnemonicParsing="false" onAction="#previousTimetableAction" prefWidth="70.0" text="Previous">
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </Button>
                               <TextField fx:id="selectedTimetableField" prefHeight="26.0" prefWidth="50.0">
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </TextField>
                               <Text fx:id="timetableCountLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="of 0">
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                                  <font>
                                     <Font size="14.0" />
@@ -114,7 +119,7 @@
                               </Text>
                               <Button mnemonicParsing="false" onAction="#nextTimetableAction" prefWidth="70.0" text="Next">
                                  <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                    <Insets left="5.0" right="5.0" top="5.0" />
                                  </HBox.margin>
                               </Button>
                            </children>
@@ -192,6 +197,9 @@
                </children>
             </HBox>
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
       </VBox>
    </children>
 </AnchorPane>

@@ -2,18 +2,30 @@ package use_cases.timetable_view;
 
 import entities.base.Timetable;
 
+import java.util.List;
+
 public class TimetableViewRequestModel {
-    private Timetable timetable;
+    private List<Timetable> timetables;
+    private int index;
 
-    public TimetableViewRequestModel(Timetable timetable) {
-        this.timetable = timetable;
+    public TimetableViewRequestModel(List<Timetable> timetables, int index) {
+        this.timetables = timetables;
+        this.index = index;
     }
 
-    public Timetable getTimetable() {
-        return timetable;
+    public List<Timetable> getTimetables() {
+        return timetables;
     }
 
-    public void setTimetable(Timetable timetable) {
-        this.timetable = timetable;
+    public void setTimetables(List<Timetable> timetables) {
+        this.timetables = timetables;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }
