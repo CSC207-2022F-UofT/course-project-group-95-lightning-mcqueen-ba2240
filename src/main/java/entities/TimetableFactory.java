@@ -1,4 +1,4 @@
-package use_cases;
+package entities;
 
 import entities.base.Collapsible;
 import entities.base.Course;
@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 
 public class TimetableFactory {
+
+    private TimetableFactory() {}
+
     /**
      * Tutorials and Practicals that occur at the same
      * time can be taken as a single session to reduce the

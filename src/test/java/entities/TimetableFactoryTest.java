@@ -1,25 +1,25 @@
-package use_cases;
+package entities;
 
 import entities.base.Course;
-import entities.base.Timetable;
 import entities.base.Meeting;
 import entities.base.Session;
+import entities.base.Timetable;
 import entities.stgartsci.StGArtSciMeeting;
 import entities.stgartsci.StGArtSciMeeting.StGArtSciType;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
 
-public class TimetableFactoryTest {
+class TimetableFactoryTest {
     /**
      * Test that meetings that are a Tutorial or Practical and share the same
      * time signature will collapse into one meeting to generate fewer timetables
      */
     @Test
-    public void testMeetingCollapse() {
+    void testMeetingCollapse() {
         Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
         Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0));
 
@@ -32,7 +32,7 @@ public class TimetableFactoryTest {
         Course course = new Course(0, "", "", meeting1, meeting2);
 
         List<Timetable> timetables = TimetableFactory.generate(List.of(course));
-        Assertions.assertEquals(timetables.size(), 1);
+        Assertions.assertEquals(1, timetables.size());
     }
 
     /**
@@ -40,7 +40,7 @@ public class TimetableFactoryTest {
      * must be n_1 * n_2 * ... * n_k where k is the number of courses
      */
     @Test
-    public void testPermutations() {
+    void testPermutations() {
         Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
         Meeting m1 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s1);
 
@@ -84,7 +84,7 @@ public class TimetableFactoryTest {
      * must be n_1 * n_2 * ... * n_k where k is the number of courses minus any conflicts
      */
     @Test
-    public void testPermutationsConflicts() {
+    void testPermutationsConflicts() {
         Session s1 = new Session(DayOfWeek.MONDAY, LocalTime.of(1, 0), LocalTime.of(2,0));
         Meeting m1 = new Meeting("", StGArtSciType.LEC, "", 0, 0, 0, s1);
 

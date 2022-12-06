@@ -1,4 +1,4 @@
-package use_cases;
+package entities;
 
 import entities.base.Meeting;
 import entities.base.Session;
@@ -10,6 +10,9 @@ import java.util.List;
  * A timetable validator class that checks if a timetable has no time conflicts
  */
 public class TimetableValidator {
+
+    private TimetableValidator() {}
+
     /**
      * @param session1 one session of a meeting
      * @param session2 second session of a meeting
