@@ -1,5 +1,12 @@
 package entities.base;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import entities.stgartsci.StGArtSciMeeting;
+
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -8,13 +15,15 @@ import java.util.*;
  */
 public class Meeting {
     private String section;
-    private final Type type;
-    private final List<Session> sessions;
-    private final String instructor;
-    private final int capacity;
-    private final int enrollment;
-    private final int waitlist;
+    private Type type;
+    private List<Session> sessions;
+    private String instructor;
+    private int capacity;
+    private int enrollment;
+    private int waitlist;
     private Float rateMyProf;
+
+    public Meeting(){}
 
     /**
      * Construct a Meeting, setting the section, meeting type, duration, sessions, instructor, rateMyProf score.
@@ -121,6 +130,56 @@ public class Meeting {
         return waitlist;
     }
 
+
+    /**
+     * A setter for the entities.Meeting's type.
+     * @param type the entities.Meeting's type as a String
+     */
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    /**
+     * A setter for the entities.Meeting's sessions.
+     * @param sessions the entities.Meeting's sessions as a Session[]
+     */
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    /**
+     * A setter for the entities.Meeting's instructor.
+     * @param instructor the entities.Meeting's instructor as a String
+     */
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    /**
+     * A setter for the entities.Meeting's capacity.
+     * @param capacity  the entities.Meeting's capacity as an integer
+     */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    /**
+     * A setter for the entities.Meeting's enrollment.
+     * @param enrollment  the entities.Meeting's enrollment as an integer
+     */
+    public void setEnrollment(int enrollment) {
+        this.enrollment = enrollment;
+    }
+
+    /**
+     * A getter for the entities.Meeting's waitlist.
+     * @param waitlist the entities.Meeting's waitlist as an integer
+     */
+    public void setWaitlist(int waitlist) {
+        this.waitlist = waitlist;
+    }
+
+
     /**
      * Add a new Session to the Meeting
      * @param session the meeting to be added to the course
@@ -172,12 +231,35 @@ public class Meeting {
         return hash;
     }
 
-    public interface Type{}
+    @JsonDeserialize(using = Type.TypeDeserializer.class)
+    public interface Type{
+        /**
+         * Deserialization class for Meeting Types
+         */
+        class TypeDeserializer extends StdDeserializer<Type> {
+            public TypeDeserializer() {
+                this(null);
+            }
+
+            public TypeDeserializer(Class<?> vc) {
+                super(vc);
+            }
+
+            @Override
+            public Type deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+                String t = p.getCodec().readTree(p).toString().replace("\"", "");
+                if (StGArtSciMeeting.StGArtSciType.parse(t) != null){
+                    return StGArtSciMeeting.StGArtSciType.parse(t);
+                }
+                return DefaultType.DEFAULT;
+            }
+        }
+    }
 
     /**
      * Enum for Meeting Type
      */
     public enum DefaultType implements Type{
-        DEFAULT;
+        DEFAULT
     }
 }

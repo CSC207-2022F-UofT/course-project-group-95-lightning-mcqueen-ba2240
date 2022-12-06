@@ -15,6 +15,7 @@ run {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -23,6 +24,9 @@ dependencies {
     implementation 'org.controlsfx:controlsfx:11.1.2'
     implementation 'com.calendarfx:view:11.12.3'
     testImplementation('org.junit.jupiter:junit-jupiter:5.6.0')
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0'
 }
 
 test {
