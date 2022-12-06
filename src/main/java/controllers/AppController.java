@@ -16,6 +16,10 @@ import use_cases.auto_complete.AutoCompleteInputBoundary;
 import use_cases.auto_complete.AutoCompleteInteractor;
 import use_cases.auto_complete.AutoCompleteRequestModel;
 import use_cases.auto_complete.AutoCompleteResponseModel;
+import use_cases.filter.FilterInputBoundary;
+import use_cases.filter.FilterInteractor;
+import use_cases.filter.FilterRequestModel;
+import use_cases.filter.FilterResponseModel;
 import use_cases.timetable_generation.TimetableGenerationInputBoundary;
 import use_cases.timetable_generation.TimetableGenerationInteractor;
 import use_cases.timetable_generation.TimetableGenerationRequestModel;
@@ -44,6 +48,9 @@ public class AppController implements Initializable {
     private TextField selectedTimetableField;
 
     @FXML
+    private TextField tagField;
+
+    @FXML
     private Text courseListLabel;
 
     @FXML
@@ -68,6 +75,7 @@ public class AppController implements Initializable {
 
     private final ArrayList<String> courseList = new ArrayList<>();
     private List<Timetable> timetableList = new ArrayList<>();
+    private List<Timetable> filteredTimetableList = new ArrayList<>();
     private int currentTimetableIndex = 0;
 
     /**
@@ -97,13 +105,14 @@ public class AppController implements Initializable {
         TimetableGenerationRequestModel request = new TimetableGenerationRequestModel(courseList);
         TimetableGenerationResponseModel response = timetableGenerationInputBoundary.generate(request);
         timetableList = response.getTimetableList();
+        filteredTimetableList = timetableList;
         timetableCountLabel.setText("of " + timetableList.size());
         viewTimetable();
     }
 
     @FXML
     void nextTimetableAction() {
-        if (currentTimetableIndex + 1 < timetableList.size()){
+        if (currentTimetableIndex + 1 < filteredTimetableList.size()){
             currentTimetableIndex++;
             viewTimetable();
         }else {
@@ -120,6 +129,31 @@ public class AppController implements Initializable {
             ErrorWindow.callError("First Timetable", "This is the first timetable!");
         }
     }
+
+    @FXML
+    void filterAction() {
+        FilterInputBoundary filterInputBoundary = new FilterInteractor();
+        FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList);
+        FilterResponseModel response = filterInputBoundary.filter(request);
+        filteredTimetableList = response.getTimetables();
+        if (!filteredTimetableList.isEmpty()){
+            timetableCountLabel.setText("of " + filteredTimetableList.size());
+            currentTimetableIndex = 0;
+            viewTimetable();
+        }else {
+            ErrorWindow.callError("No Matching Timetables", "There are no timetables that fit " +
+                    "your requirments, try using different tags");
+        }
+    }
+
+    @FXML
+    void clearFilterAction() {
+        tagField.setText("");
+        filteredTimetableList = timetableList;
+        currentTimetableIndex = 0;
+        viewTimetable();
+    }
+
 
     /**
      * SearchFieldTyped helps call the required functions to populate the search bar with appropriate suggestions
@@ -143,7 +177,7 @@ public class AppController implements Initializable {
      * Update the TimetableHbox and other related components on change in currentTimetableIndex
      */
     void viewTimetable() {
-        Timetable timetable = timetableList.get(currentTimetableIndex);
+        Timetable timetable = filteredTimetableList.get(currentTimetableIndex);
         TimetableViewRequestModel request = new TimetableViewRequestModel(timetable);
         TimetableViewResponseModel response = timetableViewInputBoundary.getView(request);
 
