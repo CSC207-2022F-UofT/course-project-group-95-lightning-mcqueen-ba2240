@@ -1,5 +1,6 @@
 package controllers;
 
+import entities.base.Timetable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,14 +10,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.TextFields;
+import presenters.ErrorWindow;
 import use_cases.auto_complete.AutoCompleteInteractor;
 import use_cases.auto_complete.AutoCompleteRequestModel;
 import use_cases.auto_complete.AutoCompleteResponseModel;
+import use_cases.timetable_generation.TimetableGenerationInputBoundary;
+import use_cases.timetable_generation.TimetableGenerationInteractor;
+import use_cases.timetable_generation.TimetableGenerationRequestModel;
+import use_cases.timetable_generation.TimetableGenerationResponseModel;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import static presenters.ErrorWindow.callError;
 
 /**
  * Controller for the main view
@@ -41,10 +50,12 @@ public class AppController implements Initializable {
 
     private final AutoCompleteInteractor autoCompleteInteractor = new AutoCompleteInteractor();
 
-    private final ArrayList<String> courseList = new ArrayList<>();
+    private final TimetableGenerationInputBoundary timetableGenerationInputBoundary = new
+            TimetableGenerationInteractor();
 
+    private final List<String> courseList = new ArrayList<>();
 
-
+    private List<Timetable> timetableList = new ArrayList<>();
 
     // add course into courseList and input the new addition to be updated in the UI.
     @FXML
@@ -78,6 +89,10 @@ public class AppController implements Initializable {
 
     @FXML
     void generateCourses(ActionEvent event) {
+        TimetableGenerationRequestModel request = new TimetableGenerationRequestModel(courseList);
+        TimetableGenerationResponseModel response = timetableGenerationInputBoundary.generate(request);
+        timetableList = response.getTimetableList();
+
     }
 
     /**

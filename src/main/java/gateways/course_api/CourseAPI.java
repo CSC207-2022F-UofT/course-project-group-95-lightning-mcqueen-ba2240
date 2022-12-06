@@ -4,6 +4,7 @@ import entities.base.Course;
 import org.json.JSONObject;
 import use_cases.course_builder.CourseBuilder;
 import use_cases.course_builder.StGArtSciCourseBuilder;
+import use_cases.timetable_generation.CourseGatewayAccessInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +19,7 @@ import java.util.*;
  * a simplified list of courses for lookup. Stores result in a
  * cache for repeated lookups
  */
-abstract public class CourseAPI {
+abstract public class CourseAPI implements CourseGatewayAccessInterface {
     protected final CourseBuilder courseBuilder = new StGArtSciCourseBuilder();
     protected final HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 
