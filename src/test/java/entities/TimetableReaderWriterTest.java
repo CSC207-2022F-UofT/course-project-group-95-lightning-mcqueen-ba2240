@@ -1,6 +1,5 @@
-package use_cases;
+package entities;
 
-import entities.TimetableReaderWriter;
 import entities.base.Meeting;
 import entities.base.Timetable;
 import entities.stgartsci.StGArtSciMeeting;
@@ -14,12 +13,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class TimetableReaderWriterTest {
+class TimetableReaderWriterTest {
     @Test
-    public void TestWriteToJSON() throws IOException {
+    void TestWriteToJSON() throws IOException {
         Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal", 30, 100, 120);
 
-        ArrayList<Meeting> meetingsArray = new ArrayList<Meeting>();
+        ArrayList<Meeting> meetingsArray = new ArrayList<>();
         meetingsArray.add(meetings);
 
         HashSet<String> tags = new HashSet<>();
@@ -27,9 +26,8 @@ public class TimetableReaderWriterTest {
         tags.add("2");
         tags.add("3");
 
-
         Timetable timetable = new Timetable(meetingsArray, tags);
-        ArrayList<Timetable> timeTableArray = new ArrayList<Timetable>();
+        ArrayList<Timetable> timeTableArray = new ArrayList<>();
         timeTableArray.add(timetable);
 
         TimetableReaderWriter timetablereaderwriter = new TimetableReaderWriter();
@@ -39,15 +37,14 @@ public class TimetableReaderWriterTest {
 
         // read file and check if json is same file
         // compare the two files by copying the data.json file
-
-        String fileContent = new String("[{\"meetings\":[{\"section\":\"Alex\",\"type\":\"LEC\",\"sessions\":[],\"instructor\":\"Arsal\",\"capacity\":30,\"enrollment\":100,\"waitlist\":120,\"rateMyProf\":null}],\"tags\":[\"1\",\"2\",\"3\"]}]");
+        String fileContent = "[{\"meetings\":[{\"section\":\"Alex\",\"type\":\"LEC\",\"sessions\":[],\"instructor\":\"Arsal\",\"capacity\":30,\"enrollment\":100,\"waitlist\":120,\"rateMyProf\":null}],\"tags\":[\"1\",\"2\",\"3\"]}]";
         Assertions.assertEquals(fileContent, bufferedTest.readLine());
     }
     @Test
-    public void TestReadFromJSON() {
+    void TestReadFromJSON() {
         Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal", 30, 100, 120);
 
-        ArrayList<Meeting> meetingsArray = new ArrayList<Meeting>();
+        ArrayList<Meeting> meetingsArray = new ArrayList<>();
         meetingsArray.add(meetings);
 
         HashSet<String> tags = new HashSet<>();
@@ -55,37 +52,16 @@ public class TimetableReaderWriterTest {
         tags.add("2");
         tags.add("3");
 
-
         Timetable timetable = new Timetable(meetingsArray, tags);
-        ArrayList<Timetable> timeTableArray = new ArrayList<Timetable>();
+        ArrayList<Timetable> timeTableArray = new ArrayList<>();
         timeTableArray.add(timetable);
 
         TimetableReaderWriter timetablereaderwriter = new TimetableReaderWriter();
         timetablereaderwriter.saveToJson(timeTableArray);
 
         List<Timetable> timetables = timetablereaderwriter.readFromJson();
-        System.out.println(timetables);
-        // check that object is exactly the same
-        // created object
-        // read from json
-        // compare if equal
 
         Assertions.assertEquals(timeTableArray, timetables);
-
-//        StGArtSciMeeting meetings = new StGArtSciMeeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal", 30, 100, 120);
-//
-//        ArrayList<StGArtSciMeeting> meetingsArray = new ArrayList<StGArtSciMeeting>();
-//        meetingsArray.add(meetings);
-//
-//        HashSet<String> tags = new HashSet<>();
-//        tags.add("1");
-//        tags.add("2");
-//        tags.add("3");
-//
-//        Timetable timetable = new Timetable(meetingsArray, tags);
-//        ArrayList<Timetable> timeTableArray = new ArrayList<Timetable>();
-//        timeTableArray.add(timetable);
-
     }
 
 }

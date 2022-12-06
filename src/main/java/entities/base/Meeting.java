@@ -1,12 +1,12 @@
 package entities.base;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import entities.stgartsci.StGArtSciMeeting;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -23,7 +23,7 @@ public class Meeting {
     private int waitlist;
     private Float rateMyProf;
 
-    public Meeting(){};
+    public Meeting(){}
 
     /**
      * Construct a Meeting, setting the section, meeting type, duration, sessions, instructor, rateMyProf score.
@@ -231,12 +231,35 @@ public class Meeting {
         return hash;
     }
 
-    public interface Type{}
+    @JsonDeserialize(using = Type.TypeDeserializer.class)
+    public interface Type{
+        /**
+         * Deserialization class for Meeting Types
+         */
+        class TypeDeserializer extends StdDeserializer<Type> {
+            public TypeDeserializer() {
+                this(null);
+            }
+
+            public TypeDeserializer(Class<?> vc) {
+                super(vc);
+            }
+
+            @Override
+            public Type deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+                String t = p.getCodec().readTree(p).toString().replace("\"", "");
+                if (StGArtSciMeeting.StGArtSciType.parse(t) != null){
+                    return StGArtSciMeeting.StGArtSciType.parse(t);
+                }
+                return DefaultType.DEFAULT;
+            }
+        }
+    }
 
     /**
      * Enum for Meeting Type
      */
     public enum DefaultType implements Type{
-        DEFAULT;
+        DEFAULT
     }
 }

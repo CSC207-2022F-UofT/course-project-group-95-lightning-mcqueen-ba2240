@@ -62,12 +62,14 @@ public class StGArtSciMeeting extends Meeting implements Collapsible {
         public static Type parse(String s) {
             if (s.equals("LEC")){
                 return LEC;
-            } if (s.equals("TUT")){
+            }
+            if (s.equals("TUT")){
                 return TUT;
-            } if (s.equals("PRA")){
+            }
+            if (s.equals("PRA")){
                 return PRA;
             }
-            return DefaultType.DEFAULT;
+            return null;
         }
     }
 }

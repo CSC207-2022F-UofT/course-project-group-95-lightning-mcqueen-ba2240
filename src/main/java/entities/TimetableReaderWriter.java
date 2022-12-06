@@ -17,15 +17,15 @@ public class TimetableReaderWriter {
     // Creates an instance of type ObjectMapper and stored in variable JsonSave in order to use the functionality
     // of Jackson, to write and read JSON
     private static final ObjectMapper JsonSave = new ObjectMapper();
-    private static String filePath = "./data.json";
+    private static final String FILE_PATH = "./data.json";
 
     /**
      * Converts the given Timetable ArrayList to a JSON Object and saves JSON Object to a .JSON file
      * @param timetable ArrayList of Timetable's to be saved
      */
-    public void saveToJson(ArrayList<Timetable> timetable) {
+    public void saveToJson(List<Timetable> timetable) {
         try {
-            JsonSave.writeValue(new File(filePath), timetable);
+            JsonSave.writeValue(new File(FILE_PATH), timetable);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +39,7 @@ public class TimetableReaderWriter {
     public List<Timetable> readFromJson() {
         try {
             // Obtaining existing file as new File(filePath)
-            Timetable[] timetables = JsonSave.readValue(new File(filePath), Timetable[].class);
+            Timetable[] timetables = JsonSave.readValue(new File(FILE_PATH), Timetable[].class);
             // Converts from Array of timetables to list of timetables
             return Arrays.asList(timetables);
         } catch (IOException e) {
