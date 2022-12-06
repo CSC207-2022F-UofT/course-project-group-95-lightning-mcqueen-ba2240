@@ -4,7 +4,7 @@ import entities.base.Course;
 import entities.base.Timetable;
 import gateways.course_api.StGArtSciAPI;
 import presenters.ErrorWindow;
-import use_cases.TimetableFactory;
+import entities.TimetableFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class TimetableGenerationInteractor implements TimetableGenerationInputBo
 
     @Override
     public TimetableGenerationResponseModel generate(TimetableGenerationRequestModel requestModel) {
-        ArrayList<Course> courses = new ArrayList<Course>();
+        ArrayList<Course> courses = new ArrayList<>();
         for (String courseString : requestModel.getCourseList()){
             try {
                 courses.add(api.getCourse(courseString, false));
