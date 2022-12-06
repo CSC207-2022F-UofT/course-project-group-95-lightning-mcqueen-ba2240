@@ -50,6 +50,9 @@ public class AppController implements Initializable {
     private Text timetableCountLabel;
 
     @FXML
+    private Text tagsLabel;
+
+    @FXML
     private ComboBox<String> semesterField;
 
     @FXML
@@ -140,13 +143,17 @@ public class AppController implements Initializable {
      * Update the TimetableHbox and other related components on change in currentTimetableIndex
      */
     void viewTimetable() {
-        TimetableViewRequestModel request = new TimetableViewRequestModel(timetableList.get(currentTimetableIndex));
+        Timetable timetable = timetableList.get(currentTimetableIndex);
+        TimetableViewRequestModel request = new TimetableViewRequestModel(timetable);
         TimetableViewResponseModel response = timetableViewInputBoundary.getView(request);
 
         ObservableList<Node> children = timetableBox.getChildren();
         children.clear();
         children.add(response.getNode());
         HBox.setHgrow(response.getNode(), Priority.ALWAYS);
+
+        String tags = String.join(", ", timetable.getTags());
+        tagsLabel.setText("Tags: " + tags);
 
         selectedTimetableField.setText(String.valueOf(currentTimetableIndex + 1));
     }
@@ -155,11 +162,8 @@ public class AppController implements Initializable {
      * Displays the user's selected courses in a label
      */
     void updateCourseListLabel() {
-        StringBuilder courseField = new StringBuilder("Added Courses:");
-        for (String course: courseList) {
-            courseField.append(" ").append(course).append(",");
-        }
-        courseListLabel.setText(courseField.toString());
+        String courses = String.join(", ", courseList);
+        courseListLabel.setText("Added Courses: " + courses);
     }
 
     @Override

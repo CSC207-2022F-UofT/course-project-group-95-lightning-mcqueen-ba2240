@@ -77,7 +77,7 @@ public class Tagger {
      * @return True if the two sessions are consecutive, False if not
      */
     private static Boolean consecutiveSessions(Session session1, Session session2) {
-        if ((session1 != null) && (session1.getDay() == session2.getDay())) {
+        if ((session1 != null) && (session2 != null) && (session1.getDay() == session2.getDay())) {
             return (session1.getEndTime().equals(session2.getStartTime())) ||
                     (session2.getEndTime().equals(session1.getStartTime()));
         }
