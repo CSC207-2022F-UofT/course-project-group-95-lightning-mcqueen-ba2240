@@ -17,7 +17,7 @@ import static presenters.ErrorWindow.callError;
 
 public class AutoCompleteInteractor implements AutoCompleteInputBoundary {
 
-    CourseAPI api;
+    CourseNameGatewayAccessInterface api;
 
     public AutoCompleteInteractor() {
         this.api = new StGArtSciAPI();

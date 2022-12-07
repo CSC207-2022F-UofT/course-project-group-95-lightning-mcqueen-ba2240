@@ -1,4 +1,4 @@
-package use_cases;
+package entities;
 
 import entities.base.Meeting;
 import entities.base.Session;
@@ -10,15 +10,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static use_cases.TimetableValidator.validateMeetings;
+import static entities.TimetableValidator.validateMeetings;
 
-public class TimetableValidatorTest {
+class TimetableValidatorTest {
 
     /**
      * Test if the TimetableValidator class outputs the correct boolean object if there is a session overlap
      */
     @Test
-    public void testValidateMeetingsTimeOverlap() {
+    void testValidateMeetingsTimeOverlap() {
         Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
         Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(4, 0), LocalTime.of(6,0));
 
@@ -38,7 +38,7 @@ public class TimetableValidatorTest {
      * boolean object if there is a time overlap but no day overlap
      */
     @Test
-    public void testValidateMeetingsNoDayOverlap() {
+    void testValidateMeetingsNoDayOverlap() {
         Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
         Session session2 = new Session(DayOfWeek.TUESDAY, LocalTime.of(4, 0), LocalTime.of(6,0));
 
@@ -57,7 +57,7 @@ public class TimetableValidatorTest {
      * Test if the TimetableValidator class outputs the correct boolean object if there is no session overlap
      */
     @Test
-    public void testValidateMeetingsNoTimeOverlap() {
+    void testValidateMeetingsNoTimeOverlap() {
         Session session1 = new Session(DayOfWeek.MONDAY, LocalTime.of(3, 0), LocalTime.of(5,0));
         Session session2 = new Session(DayOfWeek.MONDAY, LocalTime.of(5, 0), LocalTime.of(6,0));
 
