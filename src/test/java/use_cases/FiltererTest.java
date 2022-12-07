@@ -26,7 +26,7 @@ class FiltererTest {
 
     @Test
     // Test the filterer using 1 tag, that should return 2 timetables
-    public void TestFilterReturnTwo() {
+    void TestFilterReturnTwo() {
         ArrayList<Timetable> example_timetables = getTimetables();
         HashSet<String> desired_tags = new HashSet<>();
         desired_tags.add("Tag1");
@@ -37,7 +37,7 @@ class FiltererTest {
 
     @Test
     // Test the filterer using 1 tag, that should return 1 timetable
-    public void TestFilterReturnOne() {
+    void TestFilterReturnOne() {
         ArrayList<Timetable> example_timetables = getTimetables();
         HashSet<String> desired_tags = new HashSet<>();
         desired_tags.add("Tag2");
@@ -48,7 +48,7 @@ class FiltererTest {
 
     @Test
     // Test the filterer using 1 tag, that should return 3 timetables
-    public void TestFilterReturnThree() {
+    void TestFilterReturnThree() {
         ArrayList<Timetable> example_timetables = getTimetables();
         HashSet<String> desired_tags = new HashSet<>();
         desired_tags.add("Tag7");
@@ -59,7 +59,7 @@ class FiltererTest {
 
     @Test
     // Test the filterer using 2 tags, that should return 2 timetables
-    public void TestTwoTags() {
+    void TestTwoTags() {
         ArrayList<Timetable> example_timetables = getTimetables();
         HashSet<String> desired_tags = new HashSet<>();
         desired_tags.add("Tag7");

@@ -2,7 +2,7 @@ package gateways;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import use_cases.RateMyProfSorter.RateMyProfGatewayAccessInterface;
+import use_cases.rate_my_prof_sorter.RateMyProfGatewayAccessInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -94,18 +94,17 @@ public class RateMyProfGateway implements RateMyProfGatewayAccessInterface {
         // iterate through each page
         for (int i = 1; i <= pages; i++) {
             JSONObject data = request(String.valueOf(i));
-            JSONArray professor_list = data.getJSONArray("professors");
+            JSONArray professorList = data.getJSONArray("professors");
 
             // iterate through the JSONArray of professors and add each professor to the mapping
-            int list_length = professor_list.length();
-            for (int j = 0; j < list_length; j++) {
-                JSONObject professor = professor_list.getJSONObject(j);
-                String last_name = (String) professor.get("tLname");
-                String first_name = (String) professor.get("tFname");
+            int listLength = professorList.length();
+            for (int j = 0; j < listLength; j++) {
+                JSONObject professor = professorList.getJSONObject(j);
+                String lastName = (String) professor.get("tLname");
+                String firstName = (String) professor.get("tFname");
                 String score = (String) professor.get("overall_rating");
-                String department = (String) professor.get("tDept");
                 if (!score.equals("N/A")) {
-                    professors.put(first_name.charAt(0) + " " + last_name, Double.parseDouble(score));
+                    professors.put(firstName.charAt(0) + " " + lastName, Double.parseDouble(score));
                 }
             }
         }
