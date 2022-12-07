@@ -20,6 +20,6 @@ class TimetableGenerationInteractorTest {
 
         TimetableGenerationResponseModel response = generator.generate(request);
 
-        assertEquals(75374, response.getTimetableList().size());
+        assertEquals(75934, response.getTimetableList().size());
     }
 }
