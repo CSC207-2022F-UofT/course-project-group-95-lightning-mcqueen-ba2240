@@ -29,7 +29,7 @@ public class TimetableGenerationInteractor implements TimetableGenerationInputBo
         List<Timetable> timetables = TimetableFactory.generate(courses);
 
         for (Timetable timetable: timetables) {
-            HashSet<String> tags = Tagger.main(timetable);
+            Set<String> tags = Tagger.addTags(timetable);
             timetable.setTags(tags);
         }
 
