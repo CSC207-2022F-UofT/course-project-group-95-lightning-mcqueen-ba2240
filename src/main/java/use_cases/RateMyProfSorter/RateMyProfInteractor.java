@@ -1,5 +1,6 @@
 package use_cases.RateMyProfSorter;
 
+import entities.TSort;
 import entities.base.Meeting;
 import entities.base.Timetable;
 import gateways.RateMyProfGateway;
@@ -37,7 +38,7 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
             double score = calculateScore(timetable, this.professorMapping);
             rmpScore.put(timetable, score);
         }
-        List<Timetable> sortedTimetableList = Tsort.sort(timetableList, rmpScore); // method call to tSortable interface
+        List<Timetable> sortedTimetableList = TSort.sort(timetableList, rmpScore); // method call to tSortable interface
 
         // return the response model with sortedTimetableList
         return new RateMyProfResponseModel(sortedTimetableList);
@@ -70,6 +71,4 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
             return totalScore / instructorsTotal;
         }
     }
-
-
 }
