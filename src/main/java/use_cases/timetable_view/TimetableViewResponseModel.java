@@ -4,9 +4,11 @@ import javafx.scene.Node;
 
 public class TimetableViewResponseModel {
     private Node node;
+    private String tags;
 
-    public TimetableViewResponseModel(Node node) {
+    public TimetableViewResponseModel(Node node, String tags) {
         this.node = node;
+        this.tags = tags;
     }
 
     public Node getNode() {
@@ -15,5 +17,13 @@ public class TimetableViewResponseModel {
 
     public void setNode(Node node) {
         this.node = node;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 }

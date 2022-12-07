@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.Map;
 
-public class RateMyProfTest {
+public class RateMyProfGatewayTest {
     @Test
     public void TestRMPgetNumberProfessors() throws IOException {
         // Test if the RMP getNumberProfessors returns a reasonable value (between 3000 and 5000)
-        int number_professors = RateMyProf.getNumberProfessors();
+        int number_professors = RateMyProfGateway.getNumberProfessors();
         boolean res = number_professors > 3000 && number_professors < 5000;
         Assertions.assertTrue(res);
 
@@ -22,8 +22,8 @@ public class RateMyProfTest {
         // Since each page can store a max of 20 professors, the number of pages should be
         // (numpages (floor division) 2) + 1
 
-        int number_professors = RateMyProf.getNumberProfessors();
-        int number_pages = RateMyProf.getNumberPages();
+        int number_professors = RateMyProfGateway.getNumberProfessors();
+        int number_pages = RateMyProfGateway.getNumberPages();
         Assertions.assertEquals(number_pages, (number_professors / 20) + 1);
     }
 
@@ -32,7 +32,7 @@ public class RateMyProfTest {
         // Test if the RMP getProfessors returns a HashMap with <= 20 professors and the
         // first professors last name should start with "A" (alphabetically sorted)
 
-        Map<String, Double> mapping = RateMyProf.getProfessors(1);
+        Map<String, Double> mapping = RateMyProfGateway.getProfessors(1);
         Object[] keys = mapping.keySet().toArray();
         String professor = (String) keys[0];
         String[] split_array = professor.split(" ");

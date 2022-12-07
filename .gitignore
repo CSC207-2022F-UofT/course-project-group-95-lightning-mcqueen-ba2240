@@ -119,3 +119,5 @@ replay_pid*
 /.idea/
 /gradlew
 /gradlew.bat
+
+data.json
