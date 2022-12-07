@@ -26,6 +26,9 @@ import use_cases.filter.FilterInputBoundary;
 import use_cases.filter.FilterInteractor;
 import use_cases.filter.FilterRequestModel;
 import use_cases.filter.FilterResponseModel;
+import use_cases.persistance.PersistenceDataModel;
+import use_cases.persistance.PersistenceInputBoundary;
+import use_cases.persistance.PersistenceInteractor;
 import use_cases.timetable_generation.TimetableGenerationInputBoundary;
 import use_cases.timetable_generation.TimetableGenerationInteractor;
 import use_cases.timetable_generation.TimetableGenerationRequestModel;
@@ -195,12 +198,20 @@ public class AppController implements Initializable {
 
     @FXML
     void saveTimetables() {
-
+        PersistenceInputBoundary persistenceInputBoundary = new PersistenceInteractor();
+        persistenceInputBoundary.save(new PersistenceDataModel(timetableList.getTimetableList()));
     }
 
     @FXML
     void loadTimetables() {
+        PersistenceInputBoundary persistenceInputBoundary = new PersistenceInteractor();
+        PersistenceDataModel data = persistenceInputBoundary.load();
+        System.out.println(data.getTimetables().size());
+        timetableList = new TimetableGenerationResponseModel(data.getTimetables());
+        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
+        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
 
+        viewTimetable();
     }
 
     /**
