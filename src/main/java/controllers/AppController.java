@@ -59,7 +59,7 @@ public class AppController implements Initializable {
 
     @FXML
     void deleteCourse(ActionEvent event) {
-        if (courseList.size()>0) {
+        if (!courseList.isEmpty()) {
             courseList.remove(courseList.size() - 1);
             updateCourseListLabel();
         }
