@@ -1,64 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="426.0" prefWidth="614.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppController">
+<AnchorPane prefHeight="522.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AppController">
    <children>
-      <HBox prefHeight="12.0" prefWidth="614.0">
+      <VBox layoutX="110.0" layoutY="50.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <MenuBar prefHeight="21.0" prefWidth="614.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-         </children>
-      </HBox>
-      <Button layoutX="14.0" layoutY="350.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="216.0" text="Generate" />
-      <HBox layoutY="53.0" prefHeight="246.0" prefWidth="382.0">
-         <children>
-            <VBox prefHeight="242.0" prefWidth="379.0">
+            <HBox prefHeight="37.0" prefWidth="782.0">
                <children>
-                  <Label prefHeight="18.0" prefWidth="188.0" text="Please enter course code:" />
-                  <TextField alignment="TOP_LEFT" prefHeight="26.0" prefWidth="367.0" promptText="ABC###" />
+                  <TextField fx:id="yearField" alignment="CENTER_RIGHT" prefHeight="26.0" prefWidth="108.0" promptText="Year">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <ComboBox fx:id="semesterField" prefHeight="26.0" prefWidth="106.0" promptText="Semester">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <TextField fx:id="searchField" onKeyTyped="#searchFieldTyped" prefHeight="26.0" prefWidth="406.0" promptText="Course e.g. CSC207" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button minWidth="27.0" mnemonicParsing="false" onAction="#addCourse" prefHeight="29.0" prefWidth="27.0" text="+">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="generateButton" defaultButton="true" mnemonicParsing="false" onAction="#generateCourses" text="Generate">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-            </VBox>
-            <VBox prefHeight="242.0" prefWidth="0.0" />
-         </children>
-      </HBox>
-      <HBox layoutX="411.0" layoutY="74.0" prefHeight="246.0" prefWidth="200.0">
-         <children>
-            <VBox prefHeight="258.0" prefWidth="198.0">
+            </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Add Course" />
-                  <Label text="Added Courses:" />
-                  <ListView prefHeight="130.0" prefWidth="243.0" />
-                  <Button mnemonicParsing="false" text="Delete Course" />
+                  <HBox prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Text fx:id="courseListLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Added Courses:" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets bottom="10.0" left="5.0" right="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" onAction="#deleteCourse" text="Delete Course">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-            </VBox>
+            </HBox>
          </children>
-      </HBox>
+      </VBox>
    </children>
 </AnchorPane>
