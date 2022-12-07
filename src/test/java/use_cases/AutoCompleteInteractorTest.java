@@ -13,30 +13,6 @@ public class AutoCompleteInteractorTest {
     private final AutoCompleteInteractor autoComplete = new AutoCompleteInteractor();
 
     /**
-     * Test that when given a search whose semester attribute is neither "Spring" nor "Fall", then the returned
-     * AutoCompleteResponseModel has an empty set of courses.
-     */
-    @Test
-    public void testInvalidSemester() {
-        AutoCompleteRequestModel request = new AutoCompleteRequestModel("CSC", "2007",
-                "NotSpring");
-        AutoCompleteResponseModel response = autoComplete.search(request);
-        assertTrue(response.getCourses().isEmpty());
-    }
-
-    /**
-     * Test that when given a search whose year attribute is in the future, then the returned
-     * AutoCompleteResponseModel has an empty set of courses.
-     */
-    @Test
-    public void testInvalidYear() {
-        AutoCompleteRequestModel request = new AutoCompleteRequestModel("CSC", "2024",
-                "Spring");
-        AutoCompleteResponseModel response = autoComplete.search(request);
-        assertTrue(response.getCourses().isEmpty());
-    }
-
-    /**
      * Test that a proper search will only return courses of the desired organization
      * (first 3 letters in course_code; e.g. "CSC")
      */
