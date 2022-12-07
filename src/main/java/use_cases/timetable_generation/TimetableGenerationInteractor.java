@@ -1,16 +1,16 @@
 package use_cases.timetable_generation;
 
+import entities.Tagger;
+import entities.TimetableFactory;
 import entities.base.Course;
 import entities.base.Timetable;
 import gateways.course_api.StGArtSciAPI;
 import presenters.ErrorWindow;
-import entities.TimetableFactory;
-import use_cases.Tagger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TimetableGenerationInteractor implements TimetableGenerationInputBoundary {
 

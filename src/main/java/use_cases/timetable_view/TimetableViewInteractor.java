@@ -1,6 +1,7 @@
 package use_cases.timetable_view;
 
 import entities.TimetableViewer;
+import entities.base.Timetable;
 
 public class TimetableViewInteractor implements TimetableViewInputBoundary{
     /**
@@ -10,6 +11,8 @@ public class TimetableViewInteractor implements TimetableViewInputBoundary{
      */
     @Override
     public TimetableViewResponseModel getView(TimetableViewRequestModel model) {
-        return new TimetableViewResponseModel(TimetableViewer.get(model.getTimetable()));
+        Timetable timetable = model.getTimetables().get(model.getIndex());
+        return new TimetableViewResponseModel(TimetableViewer.get(timetable),
+                String.join(", ", timetable.getTags()));
     }
 }

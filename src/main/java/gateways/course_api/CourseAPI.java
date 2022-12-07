@@ -2,6 +2,7 @@ package gateways.course_api;
 
 import entities.base.Course;
 import org.json.JSONObject;
+import use_cases.auto_complete.CourseNameGatewayAccessInterface;
 import use_cases.course_builder.CourseBuilder;
 import use_cases.course_builder.StGArtSciCourseBuilder;
 import use_cases.timetable_generation.CourseGatewayAccessInterface;
@@ -19,7 +20,7 @@ import java.util.*;
  * a simplified list of courses for lookup. Stores result in a
  * cache for repeated lookups
  */
-abstract public class CourseAPI implements CourseGatewayAccessInterface {
+abstract public class CourseAPI implements CourseGatewayAccessInterface, CourseNameGatewayAccessInterface {
     protected final CourseBuilder courseBuilder = new StGArtSciCourseBuilder();
     protected final HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 
