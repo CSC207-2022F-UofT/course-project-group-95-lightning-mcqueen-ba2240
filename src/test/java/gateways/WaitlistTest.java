@@ -14,9 +14,9 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 
-public class WaitlistTest {
+class WaitlistTest {
     @Test
-    public void TestWaitlistOrder() {
+    void TestWaitlistOrder() {
         // Test if the averageWaitlistOrder function returns the sorted list of timetables by their timetable score
         // in descending order
 
