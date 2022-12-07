@@ -19,7 +19,7 @@ public class TimetableGenerationInteractor implements TimetableGenerationInputBo
     @Override
     public TimetableGenerationResponseModel generate(TimetableGenerationRequestModel requestModel) {
         ArrayList<Course> courses = new ArrayList<>();
-        for (String courseString : requestModel.getCourseList()){
+        for (String courseString : requestModel.getCourseList()) {
             try {
                 courses.add(api.getCourse(courseString, false));
             } catch (IOException e) {
@@ -28,7 +28,7 @@ public class TimetableGenerationInteractor implements TimetableGenerationInputBo
         }
         List<Timetable> timetables = TimetableFactory.generate(courses);
 
-        for (Timetable timetable: timetables){
+        for (Timetable timetable: timetables) {
             HashSet<String> tags = Tagger.main(timetable);
             timetable.setTags(tags);
         }
