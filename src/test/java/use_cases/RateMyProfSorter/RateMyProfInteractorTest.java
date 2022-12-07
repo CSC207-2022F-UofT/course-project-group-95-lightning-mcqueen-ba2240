@@ -28,7 +28,7 @@ class RateMyProfInteractorTest {
         RateMyProfRequestModel requestModel = new RateMyProfRequestModel(List.of(timetable1, timetable2));
         RateMyProfInteractor interactor = new RateMyProfInteractor();
         RateMyProfResponseModel responseModel = interactor.sort(requestModel);
-        Assertions.assertEquals(List.of(timetable2, timetable1), responseModel.getTimetableList());
+        Assertions.assertEquals(List.of(timetable1, timetable2), responseModel.getTimetableList());
     }
 
 }
