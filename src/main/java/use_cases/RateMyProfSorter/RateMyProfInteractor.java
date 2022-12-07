@@ -6,6 +6,7 @@ import entities.base.Timetable;
 import gateways.RateMyProfGateway;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
             rmpScore.put(timetable, score);
         }
         List<Timetable> sortedTimetableList = TSort.sort(timetableList, rmpScore); // method call to tSortable interface
-
+        Collections.reverse(sortedTimetableList);
         // return the response model with sortedTimetableList
         return new RateMyProfResponseModel(sortedTimetableList);
     }

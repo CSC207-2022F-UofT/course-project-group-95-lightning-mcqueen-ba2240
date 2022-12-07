@@ -1,4 +1,4 @@
-package use_cases;
+package entities;
 
 import entities.base.Session;
 import entities.base.Timetable;
