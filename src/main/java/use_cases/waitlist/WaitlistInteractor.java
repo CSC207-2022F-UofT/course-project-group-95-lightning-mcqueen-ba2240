@@ -1,4 +1,4 @@
-package use_cases;
+package use_cases.waitlist;
 
 import entities.base.Meeting;
 import entities.base.Timetable;
@@ -9,30 +9,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * This dataclass stores the waitlist information for all the meetings in a given course.
+ * This data class is responsible for handling user interaction with the Waitlist course feature.
  */
 
-public class Waitlist {
-
-    public final List<Timetable> allSortedTimetables;
-
-    /**
-     * Construct a Waitlist, setting the timetables in ascending order.
-     * @param allPossibleTimetables every possible timetable which is constructed e.g. [[Timetable 1], [Timetable 2]]
-     */
-
-    public Waitlist(List<Timetable> allPossibleTimetables) {
-        this.allSortedTimetables = averageWaitlistOrder(allPossibleTimetables);
-    }
-
-    /**
-     * A getter for the sorted timetables.
-     * @return the sorted list of meetings in ascending order by 'waitlist score'
-     */
-
-    public List<Timetable> getSortedTimetables() {
-        return allSortedTimetables;
-    }
+public class WaitlistInteractor implements WaitlistInputBoundary {
 
     /**
      * Returns the meeting score of a given meeting section
@@ -63,7 +43,7 @@ public class Waitlist {
      * @return the list of all the possible timetables by their timetable score, in ascending order
      */
 
-    public static List<Timetable> averageWaitlistOrder(List<Timetable> allTimetables) {
+    private static List<Timetable> averageWaitlistOrder(List<Timetable> allTimetables) {
         Map<Timetable, Double> timetableScores = new HashMap<>();
 
         for (Timetable timetable : allTimetables) {
@@ -71,5 +51,18 @@ public class Waitlist {
         }
 
         return TSort.sort(allTimetables, timetableScores);
+    }
+
+
+    /**
+     * The sort function sorts a list of timetables by their waitlist score, which is calculated with the timetable's
+     * meetings it has, in ascending order
+     * @param requestModel of class WaitlistRequestModel to access the getter and setter methods to obtain the
+     *                     required information of the timetables to calculate their scores
+     * @return the list of timetables by their timetable score, in ascending order
+     */
+    @Override
+    public WaitlistResponseModel sort(WaitlistRequestModel requestModel) {
+        return new WaitlistResponseModel(averageWaitlistOrder(requestModel.getTimetables()));
     }
 }

@@ -5,7 +5,9 @@ import entities.base.Session;
 import entities.base.Timetable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import use_cases.Waitlist;
+import use_cases.waitlist.WaitlistInteractor;
+import use_cases.waitlist.WaitlistRequestModel;
+import use_cases.waitlist.WaitlistResponseModel;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -51,7 +53,12 @@ public class WaitlistTest {
         List<Timetable> allTimetables = List.of(timetable1, timetable2, timetable3);
         List<Timetable> expectedOutput = List.of(timetable2, timetable3, timetable1);
 
-        Assertions.assertEquals(expectedOutput, Waitlist.averageWaitlistOrder(allTimetables));
+        WaitlistRequestModel requestModel = new WaitlistRequestModel(allTimetables);
+        WaitlistInteractor interactor = new WaitlistInteractor();
+        WaitlistResponseModel responseModel = interactor.sort(requestModel);
+
+
+        Assertions.assertEquals(expectedOutput, responseModel.getSortedTimetables());
     }
 }
 
