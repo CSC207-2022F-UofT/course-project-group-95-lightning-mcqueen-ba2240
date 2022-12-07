@@ -10,7 +10,7 @@ import java.util.*;
 
 public class Timetable {
     private List<Meeting> meetings;
-    private HashSet<String> tags;
+    private Set<String> tags;
 
     public Timetable(){}
 
@@ -19,7 +19,7 @@ public class Timetable {
      * @param meetings an array of meetings (Lectures/Tutorials) belonging to the course
      * @param tags an array of Strings containing various tags that we will use to filter timetables.
      */
-    public Timetable(List<Meeting> meetings, HashSet<String> tags) {
+    public Timetable(List<Meeting> meetings, Set<String> tags) {
         this.meetings = meetings;
         this.tags = tags;
     }
@@ -36,7 +36,7 @@ public class Timetable {
      * A getter for the tags
      * @return the tags as a String array
      */
-    public HashSet<String> getTags() {
+    public Set<String> getTags() {
         return tags;
     }
 
@@ -53,7 +53,7 @@ public class Timetable {
      * A getter for the tags
      * @param tags the tags as a String array
      */
-    public void setTags(HashSet<String> tags) {
+    public void setTags(Set<String> tags) {
         this.tags = tags;
     }
 

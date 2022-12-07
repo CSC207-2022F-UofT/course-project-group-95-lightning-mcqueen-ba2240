@@ -1,16 +1,16 @@
 package use_cases.timetable_generation;
 
+import entities.Tagger;
+import entities.TimetableFactory;
 import entities.base.Course;
 import entities.base.Timetable;
 import gateways.course_api.StGArtSciAPI;
 import presenters.ErrorWindow;
-import entities.TimetableFactory;
-import use_cases.Tagger;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TimetableGenerationInteractor implements TimetableGenerationInputBoundary {
 
@@ -29,7 +29,7 @@ public class TimetableGenerationInteractor implements TimetableGenerationInputBo
         List<Timetable> timetables = TimetableFactory.generate(courses);
 
         for (Timetable timetable: timetables){
-            HashSet<String> tags = Tagger.main(timetable);
+            Set<String> tags = Tagger.addTags(timetable);
             timetable.setTags(tags);
         }
 
