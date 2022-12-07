@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimetableGenerationInteractorTest {
     private final TimetableGenerationInteractor generator = new TimetableGenerationInteractor();
 
+    /**
+     * Test that generate() generates the proper number of timetables
+     */
     @Test
     void testGenerate() {
         List<String> course_list = Arrays.asList("CSC207H1-F-20229", "MAT235Y1-Y-20229", "CSC258H1-F-20229", "CSC236H1-F-20229", "STA247H1-F-20229");
@@ -17,6 +20,6 @@ class TimetableGenerationInteractorTest {
 
         TimetableGenerationResponseModel response = generator.generate(request);
 
-        assertEquals(75000, response.getTimetableList().size());
+        assertEquals(75374, response.getTimetableList().size());
     }
 }
