@@ -37,8 +37,7 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
             double score = calculateScore(timetable, this.professorMapping);
             rmpScore.put(timetable, score);
         }
-        // TODO: call the sorting interface to sort the timetables
-        List<Timetable> sortedTimetableList = ... // method call to tSortable interface
+        List<Timetable> sortedTimetableList = Tsort.sort(timetableList, rmpScore); // method call to tSortable interface
 
         // return the response model with sortedTimetableList
         return new RateMyProfResponseModel(sortedTimetableList);
@@ -65,7 +64,11 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
         }
 
         // return the weighted score
-        return totalScore / instructorsTotal;
+        if (instructorsTotal == 0) {
+            return 0;
+        } else {
+            return totalScore / instructorsTotal;
+        }
     }
 
 
