@@ -44,6 +44,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import static presenters.ErrorWindow.callError;
+
 /**
  * Controller for the main view
  */

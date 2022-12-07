@@ -2,11 +2,16 @@ package gateways;
 
 import entities.base.Meeting;
 import entities.base.Session;
+import entities.base.Timetable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import use_cases.Waitlist;
+import use_cases.waitlist.WaitlistInteractor;
+import use_cases.waitlist.WaitlistRequestModel;
+import use_cases.waitlist.WaitlistResponseModel;
+
 import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.List;
 
 public class WaitlistTest {
@@ -36,14 +41,24 @@ public class WaitlistTest {
         // For the purposes of this function, the session can be the same for all meetings as it is not used at all
 
 
-        List<Meeting> timetable1 = List.of(m1, m2, m3, m4, m5); // The score here for this timetable should be 1.08
-        List<Meeting> timetable2 = List.of(m6, m7, m8); // The score for this timetable should be 0.0355...
-        List<Meeting> timetable3 = List.of(m9, m10, m11, m12); // The score for this timetable should be 0.24
+        List<Meeting> meetings1 = List.of(m1, m2, m3, m4, m5); // The score here for this timetable should be 1.08
+        List<Meeting> meetings2 = List.of(m6, m7, m8); // The score for this timetable should be 0.0355...
+        List<Meeting> meetings3 = List.of(m9, m10, m11, m12); // The score for this timetable should be 0.24
 
-        List<List<Meeting>> allTimetables = List.of(timetable1, timetable2, timetable3);
-        List<List<Meeting>> expectedOutput = List.of(timetable2, timetable3, timetable1);
+        Timetable timetable1 = new Timetable(meetings1, new HashSet<>());
+        Timetable timetable2 = new Timetable(meetings2, new HashSet<>());
+        Timetable timetable3 = new Timetable(meetings3, new HashSet<>());
 
-        Assertions.assertEquals(expectedOutput, Waitlist.averageWaitlistOrder(allTimetables));
+
+        List<Timetable> allTimetables = List.of(timetable1, timetable2, timetable3);
+        List<Timetable> expectedOutput = List.of(timetable2, timetable3, timetable1);
+
+        WaitlistRequestModel requestModel = new WaitlistRequestModel(allTimetables);
+        WaitlistInteractor interactor = new WaitlistInteractor();
+        WaitlistResponseModel responseModel = interactor.sort(requestModel);
+
+
+        Assertions.assertEquals(expectedOutput, responseModel.getSortedTimetables());
     }
 }
 
