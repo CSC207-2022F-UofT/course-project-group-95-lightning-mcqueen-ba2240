@@ -168,6 +168,7 @@ public class AppController implements Initializable {
         tagField.setText("");
         filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
         currentTimetableIndex = 0;
+        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
         viewTimetable();
     }
 
@@ -190,6 +191,16 @@ public class AppController implements Initializable {
             searchField.setEditable(true);
             spinner.setVisible(false);
         }).start();
+    }
+
+    @FXML
+    void saveTimetables() {
+
+    }
+
+    @FXML
+    void loadTimetables() {
+
     }
 
     /**

@@ -5,6 +5,7 @@ import com.calendarfx.model.Calendar.Style;
 import com.calendarfx.model.CalendarSource;
 import com.calendarfx.model.Entry;
 import com.calendarfx.model.Interval;
+import com.calendarfx.view.DayViewBase;
 import com.calendarfx.view.DetailedWeekView;
 import entities.base.Meeting;
 import entities.base.Session;
@@ -28,7 +29,8 @@ public class TimetableViewer {
         calendarView.setDate(getWeek().get(0));
         calendarView.setStartTime(LocalTime.parse("08:00"));
         calendarView.setAdjustToFirstDayOfWeek(true);
-        calendarView.setShowToday(false);
+        calendarView.setEarlyLateHoursStrategy(DayViewBase.EarlyLateHoursStrategy.HIDE);
+        calendarView.setVisibleHours(14);
 
         CalendarSource source = new CalendarSource("");
         source.getCalendars().addAll(getCalendars(timetable));

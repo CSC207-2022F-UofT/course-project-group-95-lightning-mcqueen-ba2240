@@ -182,12 +182,12 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="199.0" text="Save Current Session">
+                        <Button mnemonicParsing="false" onAction="#saveTimetables" prefHeight="26.0" prefWidth="199.0" text="Save Current Session">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" />
                            </VBox.margin>
                         </Button>
-                        <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="199.0" text="Load Previous Session">
+                        <Button layoutX="10.0" layoutY="313.0" mnemonicParsing="false" onAction="#loadTimetables" prefHeight="26.0" prefWidth="199.0" text="Load Previous Session">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" />
                            </VBox.margin>
