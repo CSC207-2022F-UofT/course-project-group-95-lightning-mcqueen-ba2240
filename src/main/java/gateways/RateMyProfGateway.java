@@ -2,6 +2,7 @@ package gateways;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import use_cases.RateMyProfSorter.RateMyProfGatewayAccessInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,8 +17,27 @@ import java.util.Map;
  * with UofT on the RateMyProf database, the number of pages of professors, and the professors mapped with their score
  * provided that their score is a defined number
  */
-public class RateMyProf {
-    private static Map<String, String> professors;
+public class RateMyProfGateway implements RateMyProfGatewayAccessInterface {
+    private final Map<String, Double> professorMapping;
+
+    /**
+     * An object representing the Gateway for the RateMyProf API which stores the mapping from professors to their score
+     * in a private instance attribute
+     * @throws IOException if the HTTP request fails
+     */
+    public RateMyProfGateway() throws IOException {
+        int numberPages = getNumberPages();
+        this.professorMapping = getProfessors(numberPages);
+    }
+
+    /**
+     * A getter for the professor mapping generated from the RateMyProf gateway
+     * @return a mapping from professors to their RateMyProf score, if it exists
+     */
+    @Override
+    public Map<String, Double> getProfessorMapping() {
+        return professorMapping;
+    }
 
     /**
      * Make an HTTP Get request to the RateMyProf database and return the data as a JSONObject
@@ -25,7 +45,7 @@ public class RateMyProf {
      * @return JSON object containing the response
      * @throws IOException if the HTTP request fails
      */
-    private static JSONObject request(String page) throws IOException {
+    public static JSONObject request(String page) throws IOException {
         // Create a URL object and make a GET request
         String url = String.format("https://www.ratemyprofessors.com/filter/professor/?&page=%s&filter=teacherlastname_sort_s+asc&query=*%%3A*&queryoption=TEACHER&queryBy=schoolId&sid=1484", page);
         URL api = new URL(url);
@@ -85,7 +105,7 @@ public class RateMyProf {
                 String score = (String) professor.get("overall_rating");
                 String department = (String) professor.get("tDept");
                 if (!score.equals("N/A")) {
-                    professors.put(first_name + " " + last_name + ", " + department, Double.parseDouble(score));
+                    professors.put(first_name.charAt(0) + " " + last_name, Double.parseDouble(score));
                 }
             }
         }
