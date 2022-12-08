@@ -113,7 +113,7 @@ public class Tagger {
      * @param session2 other one session being compared
      * @return True if the two sessions are consecutive, False if not
      */
-    private static Boolean consecutiveSessions(Session session1, Session session2) {
+    private static boolean consecutiveSessions(Session session1, Session session2) {
         if ((session1 != null) && (session2 != null) && (session1.getDay() == session2.getDay())) {
             return (session1.getEndTime().equals(session2.getStartTime())) ||
                     (session2.getEndTime().equals(session1.getStartTime()));
@@ -130,7 +130,7 @@ public class Tagger {
      * @param consecutiveCount list with each index representing a day and the value at each index representing
      *                         the number of consecutive courses within that day
      */
-    private static void checkDensity(Session currentSession, Session lastSession, List<Integer> consecutiveCount) {
+    private static void checkDensity(Session lastSession, Session currentSession, List<Integer> consecutiveCount) {
         if (consecutiveSessions(lastSession, currentSession)) {
             int index = currentSession.getDay().getValue();
             consecutiveCount.set(index, consecutiveCount.get(index) + 1);
@@ -152,7 +152,7 @@ public class Tagger {
                 numberOfConsecutiveDays += 1;
             }
         }
-        if (numberOfConsecutiveDays >= 3) {
+        if (numberOfConsecutiveDays >= 2) {
             tags.add("Dense");
         }
     }
