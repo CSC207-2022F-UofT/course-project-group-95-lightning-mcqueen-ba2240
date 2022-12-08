@@ -163,12 +163,12 @@
                            </VBox.margin>
                         </Button>
                         <Separator prefWidth="200.0" />
-                        <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="199.0" text="Sort By RateMyProfessor" VBox.vgrow="NEVER">
+                        <Button fx:id="rmpButton" mnemonicParsing="false" onAction="#sortRMPAction" prefHeight="26.0" prefWidth="199.0" text="Sort By RateMyProfessor" VBox.vgrow="NEVER">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                         </Button>
-                        <Button layoutX="10.0" layoutY="178.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="206.0" text="Sort By Waitlist">
+                        <Button layoutX="10.0" layoutY="178.0" mnemonicParsing="false" onAction="#sortWaitlistAction" prefHeight="26.0" prefWidth="206.0" text="Sort By Waitlist">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" />
                            </VBox.margin>
