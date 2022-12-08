@@ -1,6 +1,7 @@
 package entities;
 
 import entities.base.Meeting;
+import entities.base.Session;
 import entities.base.Timetable;
 import entities.stgartsci.StGArtSciMeeting;
 import org.junit.jupiter.api.Assertions;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +19,10 @@ import java.util.List;
 class TimetableReaderWriterTest {
     @Test
     void TestWriteToJSON() throws IOException {
-        Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal", 30, 100, 120);
+        Session session = new Session(DayOfWeek.MONDAY, LocalTime.parse("12:00"), LocalTime.parse("18:00"));
+        Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal",
+                30, 100, 120, session);
+
 
         ArrayList<Meeting> meetingsArray = new ArrayList<>();
         meetingsArray.add(meetings);
@@ -37,12 +43,14 @@ class TimetableReaderWriterTest {
 
         // read file and check if json is same file
         // compare the two files by copying the data.json file
-        String fileContent = "[{\"meetings\":[{\"section\":\"Alex\",\"type\":\"LEC\",\"sessions\":[],\"instructor\":\"Arsal\",\"capacity\":30,\"enrollment\":100,\"waitlist\":120,\"rateMyProf\":null}],\"tags\":[\"1\",\"2\",\"3\"]}]";
+        String fileContent = "[{\"meetings\":[{\"section\":\"Alex\",\"type\":\"LEC\",\"sessions\":[{\"day\":\"MONDAY\",\"startTime\":\"12:00\",\"endTime\":\"18:00\"}],\"instructor\":\"Arsal\",\"capacity\":30,\"enrollment\":100,\"waitlist\":120,\"rateMyProf\":null}],\"tags\":[\"1\",\"2\",\"3\"]}]";
         Assertions.assertEquals(fileContent, bufferedTest.readLine());
     }
     @Test
     void TestReadFromJSON() {
-        Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal", 30, 100, 120);
+        Session session = new Session(DayOfWeek.MONDAY, LocalTime.parse("12:00"), LocalTime.parse("18:00"));
+        Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC,
+                "Arsal", 30, 100, 120, session);
 
         ArrayList<Meeting> meetingsArray = new ArrayList<>();
         meetingsArray.add(meetings);
