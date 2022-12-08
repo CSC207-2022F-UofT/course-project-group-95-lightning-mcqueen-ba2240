@@ -1,6 +1,6 @@
 # CSC207 Project - Group 95
 
-#### Group Members: Tushar, John, Zeeshan, Mayushan, Arsal, Wahhab, Maroosh, Jeffrey
+#### Group Members: Tushar, John, Zeeshan, Mayushan, Arsal, Wahhab, Maroosh, Jeffery
 #### Project: UofT Timetable Generator
 
 About our Project: The program allows users to get auto-generated timetables based on their inputted Arts & Science courses. The user should be given the option to filter/prioritize by certain traits and tags  (e.g. by preferred day, time, professor ratings, and course-density) for the timetable options.
