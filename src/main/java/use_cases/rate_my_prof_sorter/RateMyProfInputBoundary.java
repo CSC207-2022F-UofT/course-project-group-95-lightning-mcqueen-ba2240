@@ -1,4 +1,4 @@
-package use_cases.RateMyProfSorter;
+package use_cases.rate_my_prof_sorter;
 
 /**
  * An interface implemented by RateMyProfInteractor.

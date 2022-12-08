@@ -1,4 +1,4 @@
-package use_cases.RateMyProfSorter;
+package use_cases.rate_my_prof_sorter;
 
 import entities.TSort;
 import entities.base.Meeting;
@@ -39,7 +39,7 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
             double score = calculateScore(timetable, this.professorMapping);
             rmpScore.put(timetable, score);
         }
-        List<Timetable> sortedTimetableList = TSort.sort(timetableList, rmpScore); // method call to tSortable interface
+        List<Timetable> sortedTimetableList = TSort.sort(rmpScore); // method call to tSortable interface
         Collections.reverse(sortedTimetableList);
         // return the response model with sortedTimetableList
         return new RateMyProfResponseModel(sortedTimetableList);
@@ -67,7 +67,7 @@ public class RateMyProfInteractor implements RateMyProfInputBoundary{
 
         // return the weighted score
         if (instructorsTotal == 0) {
-            return 0;
+            return 0.0;
         } else {
             return totalScore / instructorsTotal;
         }
