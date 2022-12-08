@@ -18,10 +18,18 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generates a DetailedWeekView for Timetable
+ */
 public class TimetableViewer {
 
     private TimetableViewer(){}
 
+    /**
+     * Returns a DetailedWeekView for Timetable
+     * @param timetable Timetable object to view
+     * @return DetailedWeekView containing the Sessions in Timetable
+     */
     public static Node get(Timetable timetable) {
         DetailedWeekView calendarView = new DetailedWeekView();
 
@@ -40,6 +48,11 @@ public class TimetableViewer {
         return calendarView;
     }
 
+    /**
+     * Get Calendars for each Meeting in Timetable
+     * @param timetable Timetable object to view
+     * @return List of Calendars
+     */
     private static List<Calendar> getCalendars(Timetable timetable) {
         List<Calendar> calendars = new ArrayList<>();
         List<Meeting> meetings = timetable.getMeetings();
@@ -52,6 +65,11 @@ public class TimetableViewer {
         return calendars;
     }
 
+    /**
+     * Get Calendar for a Meeting
+     * @param meeting Meeting object to view
+     * @return Calendar containing Sessions in Meeting
+     */
     private static Calendar getCalendar(Meeting meeting) {
         List<LocalDate> week = getWeek();
         Calendar calendar = new Calendar(meeting.getSection());
@@ -64,6 +82,10 @@ public class TimetableViewer {
         return calendar;
     }
 
+    /**
+     * Get all the Dates for the Week
+     * @return Ordered list of LocalDates starting on the current Monday
+     */
     private static List<LocalDate> getWeek() {
         LocalDate today = LocalDate.now();
         List<LocalDate> week = new ArrayList<>(List.of(today));
