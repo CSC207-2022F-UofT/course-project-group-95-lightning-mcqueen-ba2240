@@ -50,7 +50,7 @@ public class WaitlistInteractor implements WaitlistInputBoundary {
             timetableScores.put(timetable, calculateTimetableScore(timetable.getMeetings()));
         }
 
-        return TSort.sort(allTimetables, timetableScores);
+        return TSort.sort(timetableScores);
     }
 
 
