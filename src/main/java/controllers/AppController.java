@@ -18,10 +18,10 @@ import org.controlsfx.control.textfield.TextFields;
 import presenters.ErrorWindow;
 
 // Use Case
-import use_cases.RateMyProfSorter.RateMyProfInputBoundary;
-import use_cases.RateMyProfSorter.RateMyProfInteractor;
-import use_cases.RateMyProfSorter.RateMyProfRequestModel;
-import use_cases.RateMyProfSorter.RateMyProfResponseModel;
+import use_cases.rate_my_prof_sorter.RateMyProfInputBoundary;
+import use_cases.rate_my_prof_sorter.RateMyProfInteractor;
+import use_cases.rate_my_prof_sorter.RateMyProfRequestModel;
+import use_cases.rate_my_prof_sorter.RateMyProfResponseModel;
 import use_cases.auto_complete.AutoCompleteInputBoundary;
 import use_cases.auto_complete.AutoCompleteInteractor;
 import use_cases.auto_complete.AutoCompleteRequestModel;
