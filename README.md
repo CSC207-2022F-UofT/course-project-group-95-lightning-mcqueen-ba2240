@@ -28,7 +28,7 @@ About our Project: The program allows users to get auto-generated timetables bas
     - **auto_complete** 
     - **course_builder** 
     - **filter** 
-    - **persistance** 
+    - **persistence** 
     - **timetable_generation**
     - **timetable_view**
     - **waitlist**
