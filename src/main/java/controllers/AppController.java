@@ -102,8 +102,8 @@ public class AppController implements Initializable {
     private RateMyProfInputBoundary rmp;
 
     private final ArrayList<String> courseList = new ArrayList<>();
-    private TimetableGenerationResponseModel timetableList;
-    private FilterResponseModel filteredTimetableList;
+    private TimetableGenerationResponseModel timetableList = new TimetableGenerationResponseModel(null);
+    private FilterResponseModel filteredTimetableList = new FilterResponseModel(null);
     private int currentTimetableIndex = 0;
 
     /**
@@ -117,6 +117,9 @@ public class AppController implements Initializable {
         searchField.setText("");
     }
 
+    /**
+     * Delete courses from courseList
+     */
     @FXML
     void deleteCourse() {
         if (!courseList.isEmpty()) {
@@ -128,6 +131,9 @@ public class AppController implements Initializable {
         }
     }
 
+    /**
+     * Generate timetable from selected courses
+     */
     @FXML
     void generateCourses() {
         generateButton.setDisable(true);
@@ -135,12 +141,14 @@ public class AppController implements Initializable {
         TimetableGenerationRequestModel request = new TimetableGenerationRequestModel(courseList);
         timetableList = timetableGenerationInputBoundary.generate(request);
         filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
 
         viewTimetable();
         generateButton.setDisable(false);
     }
 
+    /**
+     * Next timetable button
+     */
     @FXML
     void nextTimetableAction() {
         if (filteredTimetableList != null){
@@ -153,6 +161,9 @@ public class AppController implements Initializable {
         }
     }
 
+    /**
+     * Previous timetable button
+     */
     @FXML
     void previousTimetableAction() {
         if (currentTimetableIndex - 1 >= 0){
@@ -163,13 +174,15 @@ public class AppController implements Initializable {
         }
     }
 
+    /**
+     * Filter timetables by tags in tagsField
+     */
     @FXML
     void filterAction() {
         FilterInputBoundary filterInputBoundary = new FilterInteractor();
         FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList.getTimetableList());
         filteredTimetableList = filterInputBoundary.filter(request);
         if (!filteredTimetableList.getTimetables().isEmpty()){
-            timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
             currentTimetableIndex = 0;
             viewTimetable();
         }else {
@@ -178,15 +191,16 @@ public class AppController implements Initializable {
         }
     }
 
+    /**
+     * Clear Filter TextField and reset Filter list
+     */
     @FXML
     void clearFilterAction() {
         tagField.setText("");
-        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
+        filteredTimetableList.setTimetables(timetableList.getTimetableList());
         currentTimetableIndex = 0;
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
         viewTimetable();
     }
-
 
     /**
      * SearchFieldTyped helps call the required functions to populate the search bar with appropriate suggestions
@@ -208,24 +222,32 @@ public class AppController implements Initializable {
         }).start();
     }
 
+    /**
+     * Save Timetables from data.json
+     */
     @FXML
     void saveTimetables() {
         PersistenceInputBoundary persistenceInputBoundary = new PersistenceInteractor();
         persistenceInputBoundary.save(new PersistenceDataModel(timetableList.getTimetableList()));
     }
 
+    /**
+     * Load Timetables from data.json
+     */
     @FXML
     void loadTimetables() {
         PersistenceInputBoundary persistenceInputBoundary = new PersistenceInteractor();
         PersistenceDataModel data = persistenceInputBoundary.load();
 
-        timetableList = new TimetableGenerationResponseModel(data.getTimetables());
-        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
+        timetableList.setTimetableList(data.getTimetables());
+        filteredTimetableList.setTimetables(timetableList.getTimetableList());
 
         viewTimetable();
     }
 
+    /**
+     * Sort by RateMyProf button
+     */
     @FXML
     void sortRMPAction() {
         RateMyProfRequestModel request = new RateMyProfRequestModel(filteredTimetableList.getTimetables());
@@ -235,6 +257,9 @@ public class AppController implements Initializable {
         viewTimetable();
     }
 
+    /**
+     * Sort by Waitlist button
+     */
     @FXML
     void sortWaitlistAction() {
         WaitlistInputBoundary waitlist = new WaitlistInteractor();
@@ -260,7 +285,7 @@ public class AppController implements Initializable {
         HBox.setHgrow(response.getNode(), Priority.ALWAYS);
 
         tagsLabel.setText("Tags: " + response.getTags());
-
+        timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
         selectedTimetableField.setText(String.valueOf(currentTimetableIndex + 1));
     }
 

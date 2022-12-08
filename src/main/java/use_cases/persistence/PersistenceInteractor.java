@@ -3,8 +3,16 @@ package use_cases.persistence;
 import entities.TimetableReaderWriter;
 import presenters.ErrorWindow;
 
-public class PersistenceInteractor implements PersistenceInputBoundary{
+/**
+ * The PersistenceInteractor class is an implementation of the PersistenceInputBoundary interface.
+ * It provides the functionality to save and load a PersistenceDataModel object to and from local storage.
+ */
+ public class PersistenceInteractor implements PersistenceInputBoundary{
 
+    /**
+     * Saves a given PersistenceDataModel object to local storage.
+     * @param request the PersistenceDataModel object to be saved
+     */
     @Override
     public void save(PersistenceDataModel request) {
         TimetableReaderWriter writer = new TimetableReaderWriter();
@@ -15,6 +23,10 @@ public class PersistenceInteractor implements PersistenceInputBoundary{
         }
     }
 
+    /**
+     * Loads a PersistenceDataModel object from local storage.
+     * @return the PersistenceDataModel object loaded from local storage
+     */
     @Override
     public PersistenceDataModel load() {
         TimetableReaderWriter reader = new TimetableReaderWriter();

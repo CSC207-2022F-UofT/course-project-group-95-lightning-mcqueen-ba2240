@@ -16,6 +16,7 @@ public class App extends Application {
 
         stage.setTitle("Lighting");
         stage.setScene(scene);
+        stage.setMaximized(true);
         stage.show();
     }
 
