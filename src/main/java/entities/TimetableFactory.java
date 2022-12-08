@@ -23,11 +23,9 @@ public class TimetableFactory {
     private static  void collapseToList(List<Meeting> meetings, Meeting meeting){
         boolean contains = false;
         for (Meeting m: meetings){
-            if (m instanceof Collapsible && meeting instanceof Collapsible){
-                if (((Collapsible) m).isCollapsible(meeting)){
-                    contains = true;
-                    ((Collapsible) m).collapse(meeting);
-                }
+            if (m instanceof Collapsible && meeting instanceof Collapsible && ((Collapsible) m).isCollapsible(meeting)){
+                contains = true;
+                ((Collapsible) m).collapse(meeting);
             }
         }
         // If the meeting does not share a time signature

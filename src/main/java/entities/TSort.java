@@ -6,6 +6,8 @@ import java.util.*;
 
 public class TSort {
 
+    private TSort() {}
+
     /**
      * Returns a timetable which has the corresponding score as the value given
      * @param timetableScores the HashMap of all the timetables corresponding with their timetable score

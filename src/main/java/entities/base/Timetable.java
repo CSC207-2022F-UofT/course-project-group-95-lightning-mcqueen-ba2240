@@ -45,7 +45,7 @@ public class Timetable {
      * A setter for the meetings.
      * @param meetings the course meetings as a Meeting array
      */
-    public void setMeetings(ArrayList<Meeting> meetings) {
+    public void setMeetings(List<Meeting> meetings) {
         this.meetings = meetings;
     }
 
