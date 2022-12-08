@@ -1,12 +1,16 @@
 package controllers;
 
-import javafx.event.ActionEvent;
+// UI Components
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -26,9 +30,9 @@ import use_cases.filter.FilterInputBoundary;
 import use_cases.filter.FilterInteractor;
 import use_cases.filter.FilterRequestModel;
 import use_cases.filter.FilterResponseModel;
-import use_cases.persistance.PersistenceDataModel;
-import use_cases.persistance.PersistenceInputBoundary;
-import use_cases.persistance.PersistenceInteractor;
+import use_cases.persistence.PersistenceDataModel;
+import use_cases.persistence.PersistenceInputBoundary;
+import use_cases.persistence.PersistenceInteractor;
 import use_cases.timetable_generation.TimetableGenerationInputBoundary;
 import use_cases.timetable_generation.TimetableGenerationInteractor;
 import use_cases.timetable_generation.TimetableGenerationRequestModel;
@@ -65,7 +69,19 @@ public class AppController implements Initializable {
     private TextField searchField;
 
     @FXML
+    private TextField selectedTimetableField;
+
+    @FXML
+    private TextField tagField;
+
+    @FXML
     private Text courseListLabel;
+
+    @FXML
+    private Text timetableCountLabel;
+
+    @FXML
+    private Text tagsLabel;
 
     @FXML
     private ComboBox<String> semesterField;
@@ -73,9 +89,11 @@ public class AppController implements Initializable {
     @FXML
     private TextField yearField;
 
-    private final AutoCompleteInteractor autoCompleteInteractor = new AutoCompleteInteractor();
+    @FXML
+    private HBox timetableBox;
 
-    private final ArrayList<String> courseList = new ArrayList<>();
+    @FXML
+    private ProgressIndicator spinner;
 
     private final AutoCompleteInputBoundary autoCompleteInputBoundary = new AutoCompleteInteractor();
     private final TimetableGenerationInputBoundary timetableGenerationInputBoundary = new
@@ -83,10 +101,16 @@ public class AppController implements Initializable {
 
     private RateMyProfInputBoundary rmp;
 
+    private final ArrayList<String> courseList = new ArrayList<>();
+    private TimetableGenerationResponseModel timetableList;
+    private FilterResponseModel filteredTimetableList;
+    private int currentTimetableIndex = 0;
 
-    // add course into courseList and input the new addition to be updated in the UI.
+    /**
+     * Add course into courseList and input the new addition to be updated in the UI.
+     */
     @FXML
-    void addCourse(ActionEvent event) {
+    void addCourse() {
         String course = searchField.getText();
         courseList.add(course);
         updateCourseListLabel();
@@ -94,7 +118,7 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    void deleteCourse(ActionEvent event) {
+    void deleteCourse() {
         if (!courseList.isEmpty()) {
             courseList.remove(courseList.size() - 1);
             updateCourseListLabel();
@@ -129,36 +153,58 @@ public class AppController implements Initializable {
         }
     }
 
-
-    // displays the user's selected courses in a label
-    void updateCourseListLabel() {
-        StringBuilder courseField = new StringBuilder("Added Courses:");
-        for (String course: courseList) {
-            courseField.append(" ").append(course).append(",");
+    @FXML
+    void previousTimetableAction() {
+        if (currentTimetableIndex - 1 >= 0){
+            currentTimetableIndex--;
+            viewTimetable();
+        } else {
+            ErrorWindow.callError("First Timetable", "This is the first timetable!");
         }
-        courseListLabel.setText(courseField.toString());
     }
 
     @FXML
-    void generateCourses(ActionEvent event) {
+    void filterAction() {
+        FilterInputBoundary filterInputBoundary = new FilterInteractor();
+        FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList.getTimetableList());
+        filteredTimetableList = filterInputBoundary.filter(request);
+        if (!filteredTimetableList.getTimetables().isEmpty()){
+            timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
+            currentTimetableIndex = 0;
+            viewTimetable();
+        }else {
+            ErrorWindow.callError("No Matching Timetables", "There are no timetables that fit " +
+                    "your requirements, try using different tags");
+        }
     }
+
+    @FXML
+    void clearFilterAction() {
+        tagField.setText("");
+        filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
+        currentTimetableIndex = 0;
+        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
+        viewTimetable();
+    }
+
 
     /**
      * SearchFieldTyped helps call the required functions to populate the search bar with appropriate suggestions
      * for auto complete to work properly, while also setting when the searchField can or cannot be edited.
-     * @param event parameter exists as a requirement for this function to be created but is not utilized.
      */
     @FXML
-    void searchFieldTyped(KeyEvent event) {
+    void searchFieldTyped() {
         new Thread(() -> {
+            spinner.setVisible(true);
             // Takes first 3 words from user input and uses that as org for the getSimpleCourses function.
             // Gets the keys from getSimpleCourses output and uses them as autocomplete suggestions.
             searchField.setEditable(false);
             AutoCompleteRequestModel request = new AutoCompleteRequestModel(searchField.getText(), yearField.getText(),
                     semesterField.getValue());
-            AutoCompleteResponseModel response = autoCompleteInteractor.search(request);
+            AutoCompleteResponseModel response = autoCompleteInputBoundary.search(request);
             TextFields.bindAutoCompletion(searchField, response.getCourses());
             searchField.setEditable(true);
+            spinner.setVisible(false);
         }).start();
     }
 
