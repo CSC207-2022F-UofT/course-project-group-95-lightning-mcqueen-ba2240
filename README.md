@@ -13,7 +13,7 @@ About our Project: The program allows users to get auto-generated timetables bas
     - **Session.java**: Data Class that stores the information for a given session.
     - **Timetable.java**: Data Class that stores the information for a given timetable.
     - **Collapsible.java**: Interface which checks if two Meetings can be treated as a single object.
-    - **StGArtSciMeeting.java**: 
+    - **StGArtSciMeeting.java**: A class that extends meeting and implements collapsible.
     - **Filterer.java**: Class that returns a sublist of the ArrayList containing all timetables that have certain tags.
     - **TSort.java**: Class that returns a timetable which has a specific score as the value given.
     - **Tagger.java**: This class takes in a generated timetable and returns a HashSet of tags.
