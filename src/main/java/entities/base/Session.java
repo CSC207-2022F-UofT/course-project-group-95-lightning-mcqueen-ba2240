@@ -1,5 +1,15 @@
 package entities.base;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -8,16 +18,22 @@ import java.util.Objects;
  * This dataclass stores the information for a given session.
  */
 public class Session implements Comparable<Session>{
-    private final DayOfWeek day;
-    private final LocalTime startTime;
-    private final LocalTime endTime;
+    private DayOfWeek day;
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    private LocalTime startTime;
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    private LocalTime endTime;
+
+    public Session() {}
 
     /**
      * Construct a Session, setting the session day, start time, end time and room.
      *
      * @param day       the day the session is taking place MONDAY, TUESDAY, ...
-     * @param startTime the start time of the meeting in 24H format ('12:00', '17:30')
-     * @param endTime   the end time of the meeting in 24H format ('12:00', '17:30')
+     * @param startTime the start time of the meeting in 24H format ("12:00", "17:30")
+     * @param endTime   the end time of the meeting in 24H format ("12:00", "17:30")
      */
     public Session(DayOfWeek day, LocalTime startTime, LocalTime endTime) {
         this.day = day;
@@ -49,6 +65,29 @@ public class Session implements Comparable<Session>{
         return endTime;
     }
 
+    /**
+     * A setter for the session day.
+     * @param day the session day as a DayOfWeek Object
+     */
+    public void setDay(DayOfWeek day) {
+        this.day = day;
+    }
+
+    /**
+     * A getter for the session start time
+     * @param startTime the session start time as a LocalTime object
+     */
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * A getter for the session end time
+     * @param endTime  the session start time as a LocalTime object
+     */
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
 
     @Override
     public String toString() {
@@ -90,5 +129,27 @@ public class Session implements Comparable<Session>{
         }
         return -1;
         //No need to sort on invalid timetables therefore no overlap i.e., 0 case
+    }
+
+    public static class LocalTimeDeserializer extends StdDeserializer<LocalTime> {
+
+        public LocalTimeDeserializer(){this(null);}
+
+        public LocalTimeDeserializer(Class<?> vc){super(vc);}
+        @Override
+        public LocalTime deserialize(JsonParser arg0, DeserializationContext arg1) throws IOException {
+            return LocalTime.parse(arg0.getText());
+        }
+    }
+
+    public static class LocalTimeSerializer extends StdSerializer<LocalTime> {
+
+        public LocalTimeSerializer(){this(null);}
+
+        public LocalTimeSerializer(Class<LocalTime> vc){super(vc);}
+        @Override
+        public void serialize(LocalTime arg0, JsonGenerator arg1, SerializerProvider arg2) throws IOException {
+            arg1.writeString(arg0.toString());
+        }
     }
 }
