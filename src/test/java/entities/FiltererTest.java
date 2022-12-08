@@ -1,6 +1,5 @@
-package use_cases;
+package entities;
 
-import entities.Filterer;
 import entities.base.Meeting;
 import entities.base.Timetable;
 import org.junit.jupiter.api.Test;
