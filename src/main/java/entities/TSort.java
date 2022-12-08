@@ -6,6 +6,8 @@ import java.util.*;
 
 public class TSort {
 
+    private TSort() {}
+
     /**
      * Returns the ordered list of timetables based off their timetable score, in ascending order
      * @param timetableValues a map of all the possible timetables, corresponding with their score

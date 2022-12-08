@@ -15,7 +15,7 @@ import java.util.List;
 class RateMyProfInteractorTest {
     // Test that the RMP sorter correctly sorts the timetables based on the average rate my prof score
     @Test
-    public void TestRateMyProfSorter() throws IOException {
+    void TestRateMyProfSorter() throws IOException {
         Session s1 = new Session(DayOfWeek.MONDAY,
                 LocalTime.of(1, 0), LocalTime.of(2, 0));
         Meeting m1 = new Meeting("", Meeting.DefaultType.DEFAULT, "M Badr", 100, 90,0, s1);

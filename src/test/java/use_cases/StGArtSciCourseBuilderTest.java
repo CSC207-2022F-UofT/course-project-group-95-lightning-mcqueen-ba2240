@@ -11,9 +11,9 @@ import use_cases.course_builder.StGArtSciCourseBuilder;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 
-public class StGArtSciCourseBuilderTest {
+class StGArtSciCourseBuilderTest {
     @Test
-    public void TestCourseBuilderVsCourse() {
+    void TestCourseBuilderVsCourse() {
         //Test if the classes Course and CourseBuilder produce the same result given the same specifications
         Session session = new Session(DayOfWeek.MONDAY, LocalTime.of(0, 0), LocalTime.of(1,0));
         Meeting meeting = new StGArtSciMeeting("MAR101 LEC0101", StGArtSciMeeting.StGArtSciType.LEC, "M Gillani", 10, 7, 1, session);

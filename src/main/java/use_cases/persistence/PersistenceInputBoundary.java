@@ -1,4 +1,4 @@
-package use_cases.persistance;
+package use_cases.persistence;
 
 public interface PersistenceInputBoundary {
     void save(PersistenceDataModel request);

@@ -9,7 +9,7 @@ import use_cases.auto_complete.AutoCompleteResponseModel;
 import java.time.LocalDate;
 import java.util.Set;
 
-public class AutoCompleteInteractorTest {
+class AutoCompleteInteractorTest {
     private final AutoCompleteInteractor autoComplete = new AutoCompleteInteractor();
 
     /**
@@ -17,7 +17,7 @@ public class AutoCompleteInteractorTest {
      * (first 3 letters in course_code; e.g. "CSC")
      */
     @Test
-    public void testProperOrganization() {
+    void testProperOrganization() {
         String current_year = String.valueOf(LocalDate.now().getYear());
 
         AutoCompleteRequestModel request = new AutoCompleteRequestModel("CSC", current_year, "Spring");
@@ -34,7 +34,7 @@ public class AutoCompleteInteractorTest {
      * Test that a proper search will only return courses of the desired semester or year-long courses
      */
     @Test
-    public void testProperSemester() {
+    void testProperSemester() {
         String current_year = String.valueOf(LocalDate.now().getYear());
 
         AutoCompleteRequestModel request = new AutoCompleteRequestModel("MAT", current_year, "Fall");
@@ -51,7 +51,7 @@ public class AutoCompleteInteractorTest {
      * Test that a proper search will only return courses within the desired year
      */
     @Test
-    public void testProperYear() {
+    void testProperYear() {
         String current_year = String.valueOf(LocalDate.now().getYear());
 
         AutoCompleteRequestModel request = new AutoCompleteRequestModel("CSC", current_year, "Spring");

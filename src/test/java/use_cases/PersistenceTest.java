@@ -6,8 +6,8 @@ import entities.base.Timetable;
 import entities.stgartsci.StGArtSciMeeting;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import use_cases.persistance.PersistenceDataModel;
-import use_cases.persistance.PersistenceInteractor;
+import use_cases.persistence.PersistenceDataModel;
+import use_cases.persistence.PersistenceInteractor;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-public class PersistenceTest {
+class PersistenceTest {
     private static List<Timetable> getTimetable() {
         Session session = new Session(DayOfWeek.MONDAY, LocalTime.parse("12:00"), LocalTime.parse("18:00"));
         Meeting meetings = new Meeting("Alex", StGArtSciMeeting.StGArtSciType.LEC, "Arsal",

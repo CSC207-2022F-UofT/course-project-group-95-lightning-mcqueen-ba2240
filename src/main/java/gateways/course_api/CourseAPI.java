@@ -20,7 +20,7 @@ import java.util.*;
  * a simplified list of courses for lookup. Stores result in a
  * cache for repeated lookups
  */
-abstract public class CourseAPI implements CourseGatewayAccessInterface, CourseNameGatewayAccessInterface {
+public abstract class CourseAPI implements CourseGatewayAccessInterface, CourseNameGatewayAccessInterface {
     protected final CourseBuilder courseBuilder = new StGArtSciCourseBuilder();
     protected final HashMap<String, HashMap<String, String>> cache = new HashMap<>();
 

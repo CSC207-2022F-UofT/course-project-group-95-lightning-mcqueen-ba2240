@@ -30,9 +30,9 @@ import use_cases.filter.FilterInputBoundary;
 import use_cases.filter.FilterInteractor;
 import use_cases.filter.FilterRequestModel;
 import use_cases.filter.FilterResponseModel;
-import use_cases.persistance.PersistenceDataModel;
-import use_cases.persistance.PersistenceInputBoundary;
-import use_cases.persistance.PersistenceInteractor;
+import use_cases.persistence.PersistenceDataModel;
+import use_cases.persistence.PersistenceInputBoundary;
+import use_cases.persistence.PersistenceInteractor;
 import use_cases.timetable_generation.TimetableGenerationInputBoundary;
 import use_cases.timetable_generation.TimetableGenerationInteractor;
 import use_cases.timetable_generation.TimetableGenerationRequestModel;
@@ -187,7 +187,7 @@ public class AppController implements Initializable {
             viewTimetable();
         }else {
             ErrorWindow.callError("No Matching Timetables", "There are no timetables that fit " +
-                    "your requirments, try using different tags");
+                    "your requirements, try using different tags");
         }
     }
 
