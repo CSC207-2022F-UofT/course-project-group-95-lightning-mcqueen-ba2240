@@ -30,6 +30,7 @@ public class FilterRequestModel {
     public String getFilter() {
         return filter;
     }
+
     /**
      * Setter for Filter.
      * @param filter the filter String to be set as the filter

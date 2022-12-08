@@ -141,7 +141,6 @@ public class AppController implements Initializable {
         TimetableGenerationRequestModel request = new TimetableGenerationRequestModel(courseList);
         timetableList = timetableGenerationInputBoundary.generate(request);
         filteredTimetableList = new FilterResponseModel(timetableList.getTimetableList());
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
 
         viewTimetable();
         generateButton.setDisable(false);
@@ -184,7 +183,6 @@ public class AppController implements Initializable {
         FilterRequestModel request = new FilterRequestModel(tagField.getText(), timetableList.getTimetableList());
         filteredTimetableList = filterInputBoundary.filter(request);
         if (!filteredTimetableList.getTimetables().isEmpty()){
-            timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
             currentTimetableIndex = 0;
             viewTimetable();
         }else {
@@ -201,7 +199,6 @@ public class AppController implements Initializable {
         tagField.setText("");
         filteredTimetableList.setTimetables(timetableList.getTimetableList());
         currentTimetableIndex = 0;
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
         viewTimetable();
     }
 
@@ -244,7 +241,6 @@ public class AppController implements Initializable {
 
         timetableList.setTimetableList(data.getTimetables());
         filteredTimetableList.setTimetables(timetableList.getTimetableList());
-        timetableCountLabel.setText("of " + timetableList.getTimetableList().size());
 
         viewTimetable();
     }
@@ -289,7 +285,7 @@ public class AppController implements Initializable {
         HBox.setHgrow(response.getNode(), Priority.ALWAYS);
 
         tagsLabel.setText("Tags: " + response.getTags());
-
+        timetableCountLabel.setText("of " + filteredTimetableList.getTimetables().size());
         selectedTimetableField.setText(String.valueOf(currentTimetableIndex + 1));
     }
 
