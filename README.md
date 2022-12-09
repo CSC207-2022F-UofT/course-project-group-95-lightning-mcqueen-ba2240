@@ -57,3 +57,33 @@ About our Project: The program allows users to get auto-generated timetables bas
 - Access to the RateMyProf API to access professor ratings
 - Sort timetables by Timetable Tags and Filters
 - Sort timetables by Waitlist and RateMyProf features
+
+## How to run
+**Terminal**
+
+Ensure that a JDK version `18` or above and Gradle are installed on your machine.
+
+```
+git clone https://github.com/CSC207-2022F-UofT/course-project-group-95-lightning-mcqueen-ba2240.git
+cd course-project-group-95-lightning-mcqueen-ba2240
+```
+
+Once you are in the directory build the project with Gradle
+
+```
+gradle wrapper
+```
+
+This should install all the required dependencies. Run the project with Gradle
+
+```
+./gradlew run
+```
+
+**Intellij**
+
+After cloning the project using Git or making a new project from Version Control with the repository URL, open the project in Intellij. Intellij should automatically install the required dependencies. Then open the Gradle toolbar/shelf and go to: 
+
+Tasks -> application -> run
+
+This will build and run the program
